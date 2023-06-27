@@ -18,5 +18,5 @@ public interface AddressService {
 	
 	void delete(Integer id);
 	
-	Optional<Address> findByCity(City city);
+	List<Address> findByCity(City city);
 }

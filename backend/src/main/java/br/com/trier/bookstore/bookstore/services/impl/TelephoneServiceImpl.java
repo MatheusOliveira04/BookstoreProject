@@ -22,8 +22,8 @@ public class TelephoneServiceImpl implements TelephoneService{
 		if(telephone.getNumber() == null || telephone.getNumber().trim().isEmpty()) {
 			throw new ObjectNotFound("Número do telefone está vazio");
 		}
-		DecimalFormat df = new DecimalFormat("(00)00000-0000");
-		if(telephone.getNumber() != df.format("(00)00000-0000")) {
+		String numberFormat = "^\\(\\d{2}\\)\\d{5}-\\d{4}$";
+		if(!telephone.getNumber().matches(numberFormat)) {
 			throw new IntegrityViolation(
 					"Formato de número inválido, favor utilizar o formato: (00)00000-0000");
 		}
@@ -41,7 +41,7 @@ public class TelephoneServiceImpl implements TelephoneService{
 	@Override
 	public Telephone findById(Integer id) {
 		return repository.findById(id).orElseThrow(
-				() -> new ObjectNotFound("Id: %s do telefone não encontrado"));
+				() -> new ObjectNotFound("Id: %s do telefone não encontrado".formatted(id)));
 	}
 
 	@Override

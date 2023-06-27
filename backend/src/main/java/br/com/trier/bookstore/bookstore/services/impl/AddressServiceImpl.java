@@ -60,10 +60,11 @@ public class AddressServiceImpl implements AddressService{
 	}
 
 	@Override
-	public Optional<Address> findByCity(City city) {
-		Optional<Address> address = repository.findByCity(city);
+	public List<Address> findByCity(City city) {
+		List<Address> address = repository.findByCity(city);
 		if(address.isEmpty()) {
-			throw new ObjectNotFound("A cidade: %s do endereço não foi encontrada".formatted(city.getName()));
+			throw new ObjectNotFound(
+					"A cidade: %s do endereço não foi encontrada".formatted(city.getName()));
 		}
 		return address;
 	}

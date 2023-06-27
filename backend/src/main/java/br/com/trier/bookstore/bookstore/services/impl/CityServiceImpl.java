@@ -21,17 +21,17 @@ public class CityServiceImpl implements CityService {
 		if(city.getName() == null || city.getName().trim().isEmpty()) {
 			throw new IntegrityViolation("Nome da cidade está vazio");
 		}
-		City c = findByNameIgnoreCase(city.getName());
+		City c = repository.findByNameIgnoreCase(city.getName());
 		if(c != null && c.getId() != city.getId()) {
 			throw new IntegrityViolation("A cidade já contém o nome %s".formatted(city.getName()));
 		}
 	}
 	
 	private void validUf(City city) {
-		if(city.getUf().length() != 2) {
+		if(city.getUf().trim().length() != 2) {
 			throw new IntegrityViolation("Uf da cidade deve conter 2 caracteres");
 		}
-		if(city.getUf() == null || city.getUf().trim().isEmpty()) {
+		if(city.getUf() == null) {
 			throw new IntegrityViolation("Uf da cidade está vazio, deve conter 2 caracteres");
 		}
 	}
