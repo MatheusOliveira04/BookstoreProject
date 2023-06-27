@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Setter;
 
 @Entity(name = "cliente")
@@ -16,6 +17,7 @@ import lombok.Setter;
 @AttributeOverride(name = "endereco", column = @Column(name = "address"))
 @AttributeOverride(name = "telefone", column = @Column(name = "telephone"))
 @EqualsAndHashCode(of = "id")
+@Getter
 public class Client extends Person {
 
 	@Setter

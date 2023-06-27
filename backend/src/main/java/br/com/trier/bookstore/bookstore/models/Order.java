@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -29,10 +30,10 @@ public class Order {
 	private Integer quantityBook;
 	
 	@ManyToOne
-	@Column(name = "livro", nullable = false)
+	@JoinColumn(name = "livro", nullable = false)
 	private Book book;
 	
 	@ManyToOne
-	@Column(name = "venda", nullable = false )
+	@JoinColumn(name = "venda", nullable = false )
 	private Sale sale;
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,10 +27,10 @@ public class BookAuthor {
 	private Integer id;
 	
 	@ManyToOne
-	@Column(name = "livro")
+	@JoinColumn(name = "livro")
 	private Book book;
 	
 	@ManyToOne
-	@Column(name = "autor")
+	@JoinColumn(name = "autor")
 	private Author author;
 }

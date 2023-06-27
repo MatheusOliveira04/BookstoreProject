@@ -1,6 +1,7 @@
 package br.com.trier.bookstore.bookstore.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.City;
@@ -17,5 +18,5 @@ public interface AddressService {
 	
 	void delete(Integer id);
 	
-	List<Address> findByCityOrderByName(City city);
+	Optional<Address> findByCity(City city);
 }

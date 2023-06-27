@@ -14,11 +14,10 @@ import lombok.NoArgsConstructor;
 @MappedSuperclass
 public abstract class Person {
 	
+	@Column(nullable = false)
 	private String name;
 	
-	private Integer age;
-	
-	@Column(columnDefinition = "VARCHAR(14) CHECK (cpf ~ '^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}$')")
+	@Column(nullable = false)
 	private String cpf;
 	
 	@JoinColumn(name = "endereco")

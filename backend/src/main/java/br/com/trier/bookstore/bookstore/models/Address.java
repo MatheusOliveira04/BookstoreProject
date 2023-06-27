@@ -33,6 +33,6 @@ public class Address {
 	private String neighborhood;
 	
 	@ManyToOne
-	@JoinColumn(name = "cidade")
+	@JoinColumn(name = "cidade", nullable = false)
 	private City city;
 }

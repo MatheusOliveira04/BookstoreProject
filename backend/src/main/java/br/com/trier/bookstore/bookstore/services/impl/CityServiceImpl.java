@@ -18,7 +18,7 @@ public class CityServiceImpl implements CityService {
 	CityRepository repository;
 
 	private void validName(City city) {
-		if(city.getName() == null) {
+		if(city.getName().trim() == null) {
 			throw new IntegrityViolation("Nome da cidade está vazio");
 		}
 		City c = findByNameIgnoreCase(city.getName());
@@ -39,32 +39,38 @@ public class CityServiceImpl implements CityService {
 	
 	@Override
 	public List<City> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<City> list = repository.findAll();
+		if(list.isEmpty()) {
+			throw new ObjectNotFound("Nenhuma cidade encontrada");
+		}
+		return list;
 	}
 
 	@Override
 	public City findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findById(id).orElseThrow(
+				() -> new ObjectNotFound("Id: %s da cidade não encontrado".formatted(id)));
 	}
 
 	@Override
 	public City insert(City city) {
-		// TODO Auto-generated method stub
-		return null;
+		validName(city);
+		validUf(city);
+		return repository.save(city);
 	}
 
 	@Override
-	public City update(City city) {
-		// TODO Auto-generated method stub
-		return null;
+	public City update(City city){
+		findById(city.getId());
+		validName(city);
+		validUf(city);
+		return repository.save(city);
 	}
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-		
+		City city = findById(id);
+		repository.delete(city);
 	}
 
 	@Override

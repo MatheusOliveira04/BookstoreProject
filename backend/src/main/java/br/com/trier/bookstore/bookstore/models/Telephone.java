@@ -24,6 +24,6 @@ public class Telephone {
 	@Column(name = "id_telefone")
 	private Integer id;
 	
-	@Column(name = "numero_telefone")
+	@Column(name = "numero_telefone", nullable = false)
 	private String number;
 }

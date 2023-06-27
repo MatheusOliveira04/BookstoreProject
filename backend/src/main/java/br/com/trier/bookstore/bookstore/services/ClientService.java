@@ -1,8 +1,10 @@
 package br.com.trier.bookstore.bookstore.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import br.com.trier.bookstore.bookstore.models.Address;
+import br.com.trier.bookstore.bookstore.models.Client;
 import br.com.trier.bookstore.bookstore.models.Telephone;
 
 public interface ClientService {
@@ -17,7 +19,7 @@ public interface ClientService {
 	
 	void delete(Integer id);
 	
-	List<ClientService> findByAddressOrderByName(Address address);
+	Optional<Client> findByAddressOrderByName(Address address);
 	
-	List<ClientService> findByTelephoneOrderByName(Telephone telephone);
+	Optional<Client> findByTelephoneOrderByName(Telephone telephone);
 }
