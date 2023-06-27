@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Telephone;
 import br.com.trier.bookstore.bookstore.repositories.TelephoneRepository;
@@ -11,13 +12,14 @@ import br.com.trier.bookstore.bookstore.services.TelephoneService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
 
+@Service
 public class TelephoneServiceImpl implements TelephoneService{
 
 	@Autowired
 	TelephoneRepository repository;
 
 	private void validNumber(Telephone telephone) {
-		if(telephone.getNumber() == null) {
+		if(telephone.getNumber() == null || telephone.getNumber().trim().isEmpty()) {
 			throw new ObjectNotFound("Número do telefone está vazio");
 		}
 		DecimalFormat df = new DecimalFormat("(00)00000-0000");

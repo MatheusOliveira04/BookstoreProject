@@ -6,7 +6,7 @@ import br.com.trier.bookstore.bookstore.models.Book;
 
 public interface BookService {
 
-	List<BookService> findAll();
+	List<Book> findAll();
 	
 	Book findById(Integer id);
 	

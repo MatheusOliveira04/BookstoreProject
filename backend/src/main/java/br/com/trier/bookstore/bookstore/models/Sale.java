@@ -31,6 +31,6 @@ public class Sale {
 	private Client client;
 	
 	@ManyToOne
-	@JoinColumn(name = "vendedor", nullable = false)
+	@JoinColumn(name = "vendedor")
 	private Salesperson salesperson;
 }

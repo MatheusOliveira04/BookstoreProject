@@ -15,4 +15,6 @@ public interface GenreService {
 	Genre update(Genre genre);
 	
 	void delete(Integer id);
+	
+	Genre findByDescritpionIgnoreCase(String name);
 }

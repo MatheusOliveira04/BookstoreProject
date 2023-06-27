@@ -27,7 +27,7 @@ public class BookAuthor {
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "livro")
+	@JoinColumn(name = "livro", nullable = false)
 	private Book book;
 	
 	@ManyToOne

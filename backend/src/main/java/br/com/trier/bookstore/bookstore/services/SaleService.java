@@ -1,6 +1,7 @@
 package br.com.trier.bookstore.bookstore.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import br.com.trier.bookstore.bookstore.models.Client;
 import br.com.trier.bookstore.bookstore.models.Sale;
@@ -18,7 +19,7 @@ public interface SaleService {
 	
 	void delete(Integer id);
 	
-	List<Sale> findBySalesperson(Salesperson salesperson);
+	Optional<Sale> findBySalesperson(Salesperson salesperson);
 	
-	List<Sale> findByClient(Client client);
+	Optional<Sale> findByClient(Client client);
 }

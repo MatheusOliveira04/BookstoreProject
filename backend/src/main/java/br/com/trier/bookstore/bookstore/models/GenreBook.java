@@ -27,10 +27,10 @@ public class GenreBook {
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "livro")
+	@JoinColumn(name = "livro", nullable = false)
 	private Book book;
 	
 	@ManyToOne
-	@JoinColumn(name = "genero")
+	@JoinColumn(name = "genero", nullable = false)
 	private Genre genre;
 }

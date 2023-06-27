@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.Salesperson;
@@ -13,13 +14,14 @@ import br.com.trier.bookstore.bookstore.services.SalespersonService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
 
+@Service
 public class SalespersonServiceImpl implements SalespersonService{
 
 	@Autowired
 	SalespersonRepository repository;
 
 	private void validName(Salesperson salesperson) {
-		if(salesperson.getName() == null) {
+		if(salesperson.getName() == null || salesperson.getName().trim().isEmpty()) {
 			throw new IntegrityViolation("Nome do vendedor está vazio");
 		}
 	}
@@ -34,6 +36,7 @@ public class SalespersonServiceImpl implements SalespersonService{
 					 "Formato do cpf inválido, favor utilizar o formato: 000.000.000-00");
 		 }
 	}
+	
 	
 	@Override
 	public List<Salesperson> findAll() {

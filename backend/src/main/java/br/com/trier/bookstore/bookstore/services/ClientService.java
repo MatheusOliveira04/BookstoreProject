@@ -9,13 +9,13 @@ import br.com.trier.bookstore.bookstore.models.Telephone;
 
 public interface ClientService {
 
-	List<ClientService> findAll();
+	List<Client> findAll();
 	
-	ClientService findById(Integer id);
+	Client findById(Integer id);
 	
-	ClientService insert(ClientService client);
+	Client insert(Client client);
 	
-	ClientService update(ClientService client);
+	Client update(Client client);
 	
 	void delete(Integer id);
 	

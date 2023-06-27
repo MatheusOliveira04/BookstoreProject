@@ -1,6 +1,6 @@
 package br.com.trier.bookstore.bookstore.repositories;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,6 +12,6 @@ import br.com.trier.bookstore.bookstore.models.Sale;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 
-	List<Order> findByBook(Book book);
-	List<Order> findBySale(Sale sale);
+	Optional<Order> findByBook(Book book);
+	Optional<Order> findBySale(Sale sale);
 }

@@ -18,11 +18,11 @@ public class CityServiceImpl implements CityService {
 	CityRepository repository;
 
 	private void validName(City city) {
-		if(city.getName().trim() == null) {
+		if(city.getName() == null || city.getName().trim().isEmpty()) {
 			throw new IntegrityViolation("Nome da cidade está vazio");
 		}
 		City c = findByNameIgnoreCase(city.getName());
-		if(c != null && c.getId() != c.getId()) {
+		if(c != null && c.getId() != city.getId()) {
 			throw new IntegrityViolation("A cidade já contém o nome %s".formatted(city.getName()));
 		}
 	}
@@ -31,7 +31,7 @@ public class CityServiceImpl implements CityService {
 		if(city.getUf().length() != 2) {
 			throw new IntegrityViolation("Uf da cidade deve conter 2 caracteres");
 		}
-		if(city.getUf().equals(null)) {
+		if(city.getUf() == null || city.getUf().trim().isEmpty()) {
 			throw new IntegrityViolation("Uf da cidade está vazio, deve conter 2 caracteres");
 		}
 	}
@@ -76,6 +76,9 @@ public class CityServiceImpl implements CityService {
 	@Override
 	public City findByNameIgnoreCase(String name) {
 		City city = repository.findByNameIgnoreCase(name);
+		if(city == null) {
+			throw new ObjectNotFound("nome: %s não encontrado na cidade".formatted(name));
+		}
 		return city;
 	}
 

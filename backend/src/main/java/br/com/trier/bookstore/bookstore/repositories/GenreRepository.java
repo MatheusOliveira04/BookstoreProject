@@ -8,4 +8,5 @@ import br.com.trier.bookstore.bookstore.models.Genre;
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Integer>{
 
+	Genre findByDescriptionIgnoreCase(String name);
 }

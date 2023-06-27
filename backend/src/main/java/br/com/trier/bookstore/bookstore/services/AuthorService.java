@@ -8,7 +8,7 @@ public interface AuthorService {
 
 	List<Author> findAll();
 	
-	Author finById(Integer id);
+	Author findById(Integer id);
 	
 	Author insert(Author author);
 
