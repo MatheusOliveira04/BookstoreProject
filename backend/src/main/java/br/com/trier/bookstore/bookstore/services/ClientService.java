@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.Client;
+import br.com.trier.bookstore.bookstore.models.Salesperson;
 import br.com.trier.bookstore.bookstore.models.Telephone;
 
 public interface ClientService {
@@ -18,6 +19,8 @@ public interface ClientService {
 	Client update(Client client);
 	
 	void delete(Integer id);
+	
+	Client findByCpf(String cpf);
 	
 	Optional<Client> findByAddressOrderByName(Address address);
 	

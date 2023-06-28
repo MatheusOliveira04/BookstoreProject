@@ -12,6 +12,7 @@ import br.com.trier.bookstore.bookstore.models.Telephone;
 @Repository
 public interface SalespersonRepository extends JpaRepository<Salesperson, Integer>{
 	
+	Salesperson findByCpf(String cpf);
 	Optional<Salesperson> findByAddressOrderByName(Address address);
 	Optional<Salesperson> findByTelephoneOrderByName(Telephone telephone);
  

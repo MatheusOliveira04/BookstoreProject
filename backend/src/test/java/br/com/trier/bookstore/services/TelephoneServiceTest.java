@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.bookstore.BaseTest;
+import br.com.trier.bookstore.bookstore.models.City;
 import br.com.trier.bookstore.bookstore.models.Telephone;
 import br.com.trier.bookstore.bookstore.services.TelephoneService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
@@ -102,5 +103,24 @@ public class TelephoneServiceTest extends BaseTest {
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.update(telephone));
 		assertEquals("Id: 3 do telefone não encontrado", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste deletar")
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	void deleteTest() {
+		List<Telephone> list = service.findAll();
+		assertEquals(2, list.size());
+		service.delete(3);
+		list = service.findAll();
+		assertEquals(1, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste deletar id não encontrado")
+	void deleteIfNotFoundTest() {
+		var exception = assertThrows(ObjectNotFound.class, 
+				() -> service.delete(10));
+		assertEquals("Id: 10 do telefone não encontrado", exception.getMessage());
 	}
 }

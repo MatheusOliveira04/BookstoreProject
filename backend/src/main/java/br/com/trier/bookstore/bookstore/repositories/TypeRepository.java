@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import br.com.trier.bookstore.bookstore.models.Genre;
 
 @Repository
-public interface GenreRepository extends JpaRepository<Genre, Integer>{
+public interface TypeRepository extends JpaRepository<Genre, Integer>{
 
 	Genre findByDescriptionIgnoreCase(String name);
 }

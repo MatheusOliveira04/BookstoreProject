@@ -19,6 +19,8 @@ public interface SalespersonService {
 	
 	void delete(Integer id);
 	
+	Salesperson findByCpf(String cpf);
+	
 	Optional<Salesperson> findByAddressOrderByName(Address address);
 	
 	Optional<Salesperson> findByTelephoneOrderByName(Telephone telephone);

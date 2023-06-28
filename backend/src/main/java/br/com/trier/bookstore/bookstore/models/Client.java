@@ -11,11 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity(name = "cliente")
-@AttributeOverride(name = "nome_cliente", column = @Column(name = "name"))
-@AttributeOverride(name = "idade_cliente", column = @Column(name = "age"))
-@AttributeOverride(name = "cpf_cliente", column = @Column(name = "cpf"))
-@AttributeOverride(name = "endereco", column = @Column(name = "address"))
-@AttributeOverride(name = "telefone", column = @Column(name = "telephone"))
+@AttributeOverride(name = "name", column = @Column(name = "nome_cliente"))
+@AttributeOverride(name = "cpf", column = @Column(name = "cpf_cliente"))
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Client extends Person {
@@ -26,4 +23,8 @@ public class Client extends Person {
 	@Column(name = "id_client")
     private Integer id;
 
+	public Client(Integer id, String name, String cpf, Address address, Telephone telephone) {
+		super(name, cpf, address, telephone);
+		this.id = id;
+	}
 }

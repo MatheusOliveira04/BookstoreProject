@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Genre;
-import br.com.trier.bookstore.bookstore.repositories.GenreRepository;
-import br.com.trier.bookstore.bookstore.services.GenreService;
+import br.com.trier.bookstore.bookstore.repositories.TypeRepository;
+import br.com.trier.bookstore.bookstore.services.TypeService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
 
 @Service
-public class GenreServiceImpl implements GenreService{
+public class TypeServiceImpl implements TypeService{
 
 	@Autowired
-	GenreRepository repository;
+	TypeRepository repository;
 
 	private void validDescription(Genre genre) {
 		if(genre.getDescription() == null || genre.getDescription().trim().isEmpty()) {

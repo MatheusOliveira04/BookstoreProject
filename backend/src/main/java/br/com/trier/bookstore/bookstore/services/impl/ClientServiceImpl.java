@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.Client;
+import br.com.trier.bookstore.bookstore.models.Salesperson;
 import br.com.trier.bookstore.bookstore.models.Telephone;
 import br.com.trier.bookstore.bookstore.repositories.ClientRepository;
 import br.com.trier.bookstore.bookstore.services.ClientService;
@@ -35,6 +36,10 @@ public class ClientServiceImpl implements ClientService{
 			 throw new IntegrityViolation(
 					 "Formato do cpf inválido, favor utilizar o formato: 000.000.000-00");
 		 }
+		 Client find = repository.findByCpf(client.getCpf());
+			if(find != null && find.getId() != client.getId()) {
+				throw new IntegrityViolation("O cliente já contém o cpf %s".formatted(client.getCpf()));
+			}
 	}
 
 	@Override
@@ -89,6 +94,15 @@ public class ClientServiceImpl implements ClientService{
 		Optional<Client> client = repository.findByTelephoneOrderByName(telephone);
 		if(client.isEmpty()) {
 			throw new ObjectNotFound("O telefone: %s do cliente não foi encontrado");
+		}
+		return client;
+	}
+
+	@Override
+	public Client findByCpf(String cpf) {
+		Client client = repository.findByCpf(cpf);
+		if(client == null) {
+			throw new ObjectNotFound("cpf: %s não encontrado no cliente".formatted(cpf));
 		}
 		return client;
 	}

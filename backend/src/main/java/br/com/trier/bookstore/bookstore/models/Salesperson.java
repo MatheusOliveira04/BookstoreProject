@@ -10,11 +10,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@AttributeOverride(name = "nome_vendedor", column = @Column(name = "name"))
-@AttributeOverride(name = "idade_vendedor", column = @Column(name = "age"))
-@AttributeOverride(name = "cpf_vendedor", column = @Column(name = "cpf"))
-@AttributeOverride(name = "endereco", column = @Column(name = "address"))
-@AttributeOverride(name = "telefone", column = @Column(name = "telephone"))
+@AttributeOverride(name = "name", column = @Column(name = "nome_vendedor"))
+@AttributeOverride(name = "cpf", column = @Column(name = "cpf_vendedor"))
 @Entity(name = "vendedor")
 @EqualsAndHashCode(of = "id")
 @Getter
@@ -26,4 +23,10 @@ public class Salesperson extends Person {
 	@Column(name = "id_vendedor")
     private Integer id;
 
+	public Salesperson(Integer id, String name, String cpf, Address address, Telephone telephone) {
+		super(name, cpf, address, telephone);
+		this.id = id;
+	}
+
+	
 }

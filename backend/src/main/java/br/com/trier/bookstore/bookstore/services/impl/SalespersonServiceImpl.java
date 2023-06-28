@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Address;
+import br.com.trier.bookstore.bookstore.models.City;
 import br.com.trier.bookstore.bookstore.models.Salesperson;
 import br.com.trier.bookstore.bookstore.models.Telephone;
 import br.com.trier.bookstore.bookstore.repositories.SalespersonRepository;
@@ -35,6 +36,10 @@ public class SalespersonServiceImpl implements SalespersonService{
 			 throw new IntegrityViolation(
 					 "Formato do cpf inválido, favor utilizar o formato: 000.000.000-00");
 		 }
+		 Salesperson find = repository.findByCpf(salesperson.getCpf());
+			if(find != null && find.getId() != salesperson.getId()) {
+				throw new IntegrityViolation("O vendedor já contém o cpf %s".formatted(salesperson.getCpf()));
+			}
 	}
 	
 	
@@ -90,6 +95,15 @@ public class SalespersonServiceImpl implements SalespersonService{
 		if(salesperson.isEmpty()) {
 			throw new ObjectNotFound(
 					"O Telefone: %s do vendedor não encontrado".formatted(telephone.getId()));
+		}
+		return salesperson;
+	}
+
+	@Override
+	public Salesperson findByCpf(String cpf) {
+		Salesperson salesperson = repository.findByCpf(cpf);
+		if(salesperson == null) {
+			throw new ObjectNotFound("cpf: %s não encontrado no vendedor".formatted(cpf));
 		}
 		return salesperson;
 	}
