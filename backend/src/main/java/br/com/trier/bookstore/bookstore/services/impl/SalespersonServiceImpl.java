@@ -32,7 +32,7 @@ public class SalespersonServiceImpl implements SalespersonService{
 			throw new IntegrityViolation("Cpf do vendedor está vazio");
 		}
 		 String cpfFormat = "^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}$";
-		 if(!cpfFormat.matches(salesperson.getCpf())) {
+		 if(cpfFormat.matches(salesperson.getCpf())) {
 			 throw new IntegrityViolation(
 					 "Formato do cpf inválido, favor utilizar o formato: 000.000.000-00");
 		 }

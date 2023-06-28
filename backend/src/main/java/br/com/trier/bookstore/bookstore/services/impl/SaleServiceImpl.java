@@ -1,7 +1,6 @@
 package br.com.trier.bookstore.bookstore.services.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class SaleServiceImpl implements SaleService{
 	@Override
 	public Sale findById(Integer id) {
 		return repository.findById(id).orElseThrow(
-				() -> new ObjectNotFound("Id: %s da venda não encontrado"));
+				() -> new ObjectNotFound("Id: %s da venda não encontrado".formatted(id)));
 	}
 
 	@Override
@@ -61,8 +60,8 @@ public class SaleServiceImpl implements SaleService{
 	}
 
 	@Override
-	public Optional<Sale> findBySalesperson(Salesperson salesperson) {
-		Optional<Sale> sale = repository.findBySalesperson(salesperson);
+	public List<Sale> findBySalesperson(Salesperson salesperson) {
+		List<Sale> sale = repository.findBySalesperson(salesperson);
 		if(sale.isEmpty()){
 			throw new ObjectNotFound("Nenhum vendedor encontrado");
 		}
@@ -70,8 +69,8 @@ public class SaleServiceImpl implements SaleService{
 	}
 
 	@Override
-	public Optional<Sale> findByClient(Client client) {
-		Optional<Sale> sale = repository.findByClient(client);
+	public List<Sale> findByClient(Client client) {
+		List<Sale> sale = repository.findByClient(client);
 		if(sale.isEmpty()){
 			throw new ObjectNotFound("Nenhum cliente encontrado");
 		}

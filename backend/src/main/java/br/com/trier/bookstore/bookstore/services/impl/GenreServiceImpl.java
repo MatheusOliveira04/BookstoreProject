@@ -6,22 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Genre;
-import br.com.trier.bookstore.bookstore.repositories.TypeRepository;
-import br.com.trier.bookstore.bookstore.services.TypeService;
+import br.com.trier.bookstore.bookstore.repositories.GenreRepository;
+import br.com.trier.bookstore.bookstore.services.GenreService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
 
 @Service
-public class TypeServiceImpl implements TypeService{
+public class GenreServiceImpl implements GenreService{
 
 	@Autowired
-	TypeRepository repository;
+	GenreRepository repository;
 
 	private void validDescription(Genre genre) {
 		if(genre.getDescription() == null || genre.getDescription().trim().isEmpty()) {
 			throw new IntegrityViolation("Descrição do gênero está vazio");
 		}
-		Genre find = findByDescritpionIgnoreCase(genre.getDescription());
+		Genre find = repository.findByDescriptionIgnoreCase(genre.getDescription());
 		if(find != null && find.getId() != genre.getId()) {
 			throw new IntegrityViolation(
 					"O gênero já contém o nome %s".formatted(genre.getDescription()));
@@ -40,7 +40,7 @@ public class TypeServiceImpl implements TypeService{
 	@Override
 	public Genre findById(Integer id) {
 		return repository.findById(id).orElseThrow(
-				() -> new ObjectNotFound("Id: %s do gênero não encontrado"));
+				() -> new ObjectNotFound("Id: %s do gênero não encontrado".formatted(id)));
 	}
 
 	@Override

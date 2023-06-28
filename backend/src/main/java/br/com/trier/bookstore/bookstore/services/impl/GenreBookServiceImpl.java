@@ -44,7 +44,7 @@ public class GenreBookServiceImpl implements GenreBookService{
 	@Override
 	public GenreBook findById(Integer id) {
 		return repository.findById(id).orElseThrow(
-				() -> new ObjectNotFound("Id: %s do gênero livro não encontrado"));
+				() -> new ObjectNotFound("Id: %s do gênero livro não encontrado".formatted(id)));
 	}
 
 	@Override

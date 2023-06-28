@@ -6,14 +6,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AttributeOverride(name = "name", column = @Column(name = "nome_vendedor"))
 @AttributeOverride(name = "cpf", column = @Column(name = "cpf_vendedor"))
 @Entity(name = "vendedor")
 @EqualsAndHashCode(of = "id")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class Salesperson extends Person {
 	

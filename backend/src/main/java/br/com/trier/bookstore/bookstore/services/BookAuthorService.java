@@ -19,7 +19,7 @@ public interface BookAuthorService {
 	
 	void delete(Integer id);
 	
-	Optional<BookAuthor> findByAuthor(Author author);
+	List<BookAuthor> findByAuthor(Author author);
 	
-	Optional<BookAuthor> findByBook(Book book);
+	List<BookAuthor> findByBook(Book book);
 }

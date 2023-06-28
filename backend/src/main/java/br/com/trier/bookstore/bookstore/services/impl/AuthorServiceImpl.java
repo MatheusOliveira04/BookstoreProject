@@ -1,4 +1,4 @@
-package br.com.trier.bookstore.bookstore.resources;
+package br.com.trier.bookstore.bookstore.services.impl;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class AuthorServiceImpl implements AuthorService {
 	public List<Author> findAll() {
 		List<Author> list = repository.findAll();
 		if(list.isEmpty()){
-			throw new ObjectNotFound("Nenhum author encontrado");
+			throw new ObjectNotFound("Nenhum autor encontrado");
 		}
 		return list;
 	}
@@ -35,7 +35,7 @@ public class AuthorServiceImpl implements AuthorService {
 	@Override
 	public Author findById(Integer id) {
 		return repository.findById(id).orElseThrow(
-				() -> new ObjectNotFound("Id: %s do author não encontrado"));
+				() -> new ObjectNotFound("Id: %s do autor não encontrado".formatted(id)));
 	}
 
 	@Override

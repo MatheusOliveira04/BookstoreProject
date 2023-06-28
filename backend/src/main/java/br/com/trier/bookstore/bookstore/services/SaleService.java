@@ -19,7 +19,7 @@ public interface SaleService {
 	
 	void delete(Integer id);
 	
-	Optional<Sale> findBySalesperson(Salesperson salesperson);
+	List<Sale> findBySalesperson(Salesperson salesperson);
 	
-	Optional<Sale> findByClient(Client client);
+	List<Sale> findByClient(Client client);
 }

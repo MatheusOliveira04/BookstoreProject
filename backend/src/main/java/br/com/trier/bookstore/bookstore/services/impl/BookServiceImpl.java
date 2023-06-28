@@ -12,7 +12,7 @@ import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
 
 @Service
-public class BookServiceIml implements BookService{
+public class BookServiceImpl implements BookService{
 
 	@Autowired
 	BookRepository repository;
@@ -27,7 +27,7 @@ public class BookServiceIml implements BookService{
 	public List<Book> findAll() {
 		List<Book> list = repository.findAll();
 		if(list.isEmpty()) {
-			throw new ObjectNotFound("Nenhuma livro encontrada");
+			throw new ObjectNotFound("Nenhum livro encontrado");
 		}
 		return list;
 	}
@@ -35,7 +35,7 @@ public class BookServiceIml implements BookService{
 	@Override
 	public Book findById(Integer id) {
 		return repository.findById(id).orElseThrow(
-				() -> new ObjectNotFound("Id: %s do livro não encontrado"));
+				() -> new ObjectNotFound("Id: %s do livro não encontrado".formatted(id)));
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.trier.bookstore.bookstore.models.Genre;
 
-public interface TypeService {
+public interface GenreService {
 
 	List<Genre> findAll();
 	

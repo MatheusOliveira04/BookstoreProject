@@ -32,7 +32,7 @@ public class ClientServiceImpl implements ClientService{
 			throw new IntegrityViolation("Cpf do cliente está vazio");
 		}
 		 String cpfFormat = "^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}$";
-		 if(!cpfFormat.matches(client.getCpf())) {
+		 if(cpfFormat.matches(client.getCpf())) {
 			 throw new IntegrityViolation(
 					 "Formato do cpf inválido, favor utilizar o formato: 000.000.000-00");
 		 }

@@ -163,7 +163,7 @@ public class CityServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste deletar id não encontrado")
-	void deleteIfNotFoundTest() {
+	void deleteIdNotFoundTest() {
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.delete(10));
 		assertEquals("Id: 10 da cidade não encontrado", exception.getMessage());

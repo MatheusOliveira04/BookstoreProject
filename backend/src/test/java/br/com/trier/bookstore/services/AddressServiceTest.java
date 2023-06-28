@@ -117,7 +117,7 @@ public class AddressServiceTest extends BaseTest{
 	
 	@Test
 	@DisplayName("Teste deletar id não encontrado")
-	void deleteIfNotFoundTest() {
+	void deleteIdNotFoundTest() {
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.delete(10));
 		assertEquals("Id: 10 do endereço não encontrado", exception.getMessage());

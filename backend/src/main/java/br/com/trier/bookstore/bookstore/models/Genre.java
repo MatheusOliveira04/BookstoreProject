@@ -24,6 +24,6 @@ public class Genre {
 	@Column(name = "id_genero")
 	private Integer id;
 	
-	@Column(name = "descricacao_genero", nullable = false, unique = true)
+	@Column(name = "descricao_genero", nullable = false, unique = true)
 	private String description;
 }

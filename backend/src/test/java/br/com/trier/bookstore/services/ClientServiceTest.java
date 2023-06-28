@@ -14,36 +14,36 @@ import org.springframework.test.context.jdbc.Sql;
 import br.com.trier.bookstore.BaseTest;
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.City;
-import br.com.trier.bookstore.bookstore.models.Salesperson;
+import br.com.trier.bookstore.bookstore.models.Client;
 import br.com.trier.bookstore.bookstore.models.Telephone;
-import br.com.trier.bookstore.bookstore.services.SalespersonService;
+import br.com.trier.bookstore.bookstore.services.ClientService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
 import jakarta.transaction.Transactional;
 
 @Transactional
-public class SalespersonServiceTest extends BaseTest {
-	
+public class ClientServiceTest extends BaseTest{
+
 	@Autowired
-	SalespersonService service;
+	ClientService service;
 	
 	@Test
 	@DisplayName("Teste buscar por id")
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void findByIdTest() {
-		Salesperson salesperson = service.findById(3);
-		assertNotNull(salesperson);
-		assertEquals("100.100.100-11", salesperson.getCpf());
+		Client client = service.findById(3);
+		assertNotNull(client);
+		assertEquals("100.100.100-11", client.getCpf());
 	}
 
 	@Test
 	@DisplayName("Teste buscar por id inexistente")
 	void findByIdNotFoundTest() {
 		var exception = assertThrows(ObjectNotFound.class, () -> service.findById(10));
-		assertEquals("Id: 10 do vendedor não encontrado", exception.getMessage());
+		assertEquals("Id: 10 do cliente não encontrado", exception.getMessage());
 	}
 	
 	@Test
@@ -51,9 +51,9 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void findAllTest(){
-		List<Salesperson> list = service.findAll();
+		List<Client> list = service.findAll();
 		assertEquals(2, list.size());
 	}
 	
@@ -61,25 +61,26 @@ public class SalespersonServiceTest extends BaseTest {
 	@DisplayName("Teste buscar todos sem nenhum cadastro")
 	void findAllEmptyTest() {
 		var exception = assertThrows(ObjectNotFound.class, () -> service.findAll());
-		assertEquals("Nenhum vendedor encontrado", exception.getMessage());
+		assertEquals("Nenhum cliente encontrado", exception.getMessage());
 	}
 	
+
 	@Test
 	@DisplayName("Teste inserir")
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	void insert() {
+	void insertTest() {
 		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 		Telephone telephone = new Telephone(3, "(00)00000-0000");
-		Salesperson salerperson = new Salesperson(1, "insert","100.100.100-11", address, telephone);
-		salerperson = service.insert(salerperson);
-		assertNotNull(salerperson);
-		assertEquals(1, salerperson.getId());
-		assertEquals("insert", salerperson.getName());
-		assertEquals("100.100.100-11", salerperson.getCpf());
-		assertEquals(3, salerperson.getTelephone().getId());
-		assertEquals(3, salerperson.getAddress().getId());
+		Client client = new Client(1, "insert","100.100.100-11", address, telephone);
+		client = service.insert(client);
+		assertNotNull(client);
+		assertEquals(1, client.getId());
+		assertEquals("insert", client.getName());
+		assertEquals("100.100.100-11", client.getCpf());
+		assertEquals(3, client.getTelephone().getId());
+		assertEquals(3, client.getAddress().getId());
 	}
 	
 	@Test
@@ -87,10 +88,10 @@ public class SalespersonServiceTest extends BaseTest {
 	void insertNameEmptyTest() {
 	Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 	Telephone telephone = new Telephone(3, "(00)00000-0000");
-	Salesperson salerperson = new Salesperson(3, "  " , "000.000.000-00", address, telephone);
+	Client client = new Client(3, "  " , "000.000.000-00", address, telephone);
 	var exception = assertThrows(IntegrityViolation.class, 
-			() -> service.insert(salerperson));
-	assertEquals("Nome do vendedor está vazio", exception.getMessage());
+			() -> service.insert(client));
+	assertEquals("Nome do cliente está vazio", exception.getMessage());
 	}
 
 	@Test
@@ -98,10 +99,10 @@ public class SalespersonServiceTest extends BaseTest {
 	void insertCpfIsNullTest() {
 		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 		Telephone telephone = new Telephone(3, "(00)00000-0000");
-		Salesperson salerperson = new Salesperson(3, "insert" ,null, address, telephone);
+		Client client = new Client(3, "insert" ,null, address, telephone);
 		var exception = assertThrows(IntegrityViolation.class, 
-				() -> service.insert(salerperson));
-		assertEquals("Cpf do vendedor está vazio", exception.getMessage());
+				() -> service.insert(client));
+		assertEquals("Cpf do cliente está vazio", exception.getMessage());
 	}
 	
 	@Test
@@ -109,14 +110,14 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void insertCpfDuplicateTest() {
 			Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 			Telephone telephone = new Telephone(3, "(00)00000-0000");
-			Salesperson salerperson = new Salesperson(5, "insert" ,"100.100.100-11", address, telephone);
+			Client client = new Client(5, "insert" ,"100.100.100-11", address, telephone);
 			var exception = assertThrows(IntegrityViolation.class, 
-					() -> service.insert(salerperson));
-			assertEquals("O vendedor já contém o cpf 100.100.100-11", exception.getMessage());
+					() -> service.insert(client));
+			assertEquals("O cliente já contém o cpf 100.100.100-11", exception.getMessage());
 	}
 	
 	@Test
@@ -124,16 +125,16 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void update() {
 		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 		Telephone telephone = new Telephone(3, "(00)00000-0000");
-		Salesperson salerperson = new Salesperson(3, "update","000.000.000-00", address, telephone);
-		salerperson = service.update(salerperson);
-		assertNotNull(salerperson);
-		assertEquals(3, salerperson.getId());
-		assertEquals("update", salerperson.getName());
-		assertEquals("000.000.000-00", salerperson.getCpf());
+		Client client = new Client(3, "update","000.000.000-00", address, telephone);
+		client = service.update(client);
+		assertNotNull(client);
+		assertEquals(3, client.getId());
+		assertEquals("update", client.getName());
+		assertEquals("000.000.000-00", client.getCpf());
 	}
 	
 	@Test
@@ -141,14 +142,14 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void updateIdNotFoundTest() {
 		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 		Telephone telephone = new Telephone(3, "(00)00000-0000");
-		Salesperson salesperson = new Salesperson(10, "update","000.000.000-00", address, telephone);
+		Client client = new Client(10, "update","000.000.000-00", address, telephone);
 		var exception = assertThrows(ObjectNotFound.class, 
-				() -> service.update(salesperson));
-		assertEquals("Id: 10 do vendedor não encontrado", exception.getMessage());
+				() -> service.update(client));
+		assertEquals("Id: 10 do cliente não encontrado", exception.getMessage());
 	}
 	
 	@Test
@@ -156,14 +157,14 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void updateNameEmptyTest() {
 	Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 	Telephone telephone = new Telephone(3, "(00)00000-0000");
-	Salesperson salerperson = new Salesperson(3, null, "000.000.000-00", address, telephone);
+	Client client = new Client(3, null, "000.000.000-00", address, telephone);
 	var exception = assertThrows(IntegrityViolation.class, 
-			() -> service.update(salerperson));
-	assertEquals("Nome do vendedor está vazio", exception.getMessage());
+			() -> service.update(client));
+	assertEquals("Nome do cliente está vazio", exception.getMessage());
 	}
 	
 	@Test
@@ -171,14 +172,14 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void updateCpfIsNullTest() {
 		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 		Telephone telephone = new Telephone(3, "(00)00000-0000");
-		Salesperson salerperson = new Salesperson(3, "update" ,null, address, telephone);
+		Client cliente = new Client(3, "update" ,null, address, telephone);
 		var exception = assertThrows(IntegrityViolation.class, 
-				() -> service.update(salerperson));
-		assertEquals("Cpf do vendedor está vazio", exception.getMessage());
+				() -> service.update(cliente));
+		assertEquals("Cpf do cliente está vazio", exception.getMessage());
 	}
 	
 	@Test
@@ -186,14 +187,14 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void updateCpfDuplicateTest() {
 			Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 			Telephone telephone = new Telephone(3, "(00)00000-0000");
-			Salesperson salerperson = new Salesperson(4, "update" ,"100.100.100-11", address, telephone);
+			Client client = new Client(4, "update" ,"100.100.100-11", address, telephone);
 			var exception = assertThrows(IntegrityViolation.class, 
-					() -> service.update(salerperson));
-			assertEquals("O vendedor já contém o cpf 100.100.100-11", exception.getMessage());
+					() -> service.update(client));
+			assertEquals("O cliente já contém o cpf 100.100.100-11", exception.getMessage());
 	}
 	
 	@Test
@@ -201,9 +202,9 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void deleteTest() {
-		List<Salesperson> list = service.findAll();
+		List<Client> list = service.findAll();
 		assertEquals(2, list.size());
 		service.delete(3);
 		list = service.findAll();
@@ -215,7 +216,7 @@ public class SalespersonServiceTest extends BaseTest {
 	void deleteIdNotFoundTest() {
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.delete(10));
-		assertEquals("Id: 10 do vendedor não encontrado", exception.getMessage());
+		assertEquals("Id: 10 do cliente não encontrado", exception.getMessage());
 	}
 	
 	@Test
@@ -223,13 +224,13 @@ public class SalespersonServiceTest extends BaseTest {
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
-	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
 	void findByCpfTest() {
-		Salesperson salesperson = service.findByCpf("100.100.100-11");
-		assertEquals(3, salesperson.getId());
-		assertEquals("Alex", salesperson.getName());
-		assertEquals(3, salesperson.getAddress().getId());
-		assertEquals(3, salesperson.getTelephone().getId());
+		Client client = service.findByCpf("100.100.100-11");
+		assertEquals(3, client.getId());
+		assertEquals("Alex", client.getName());
+		assertEquals(3, client.getAddress().getId());
+		assertEquals(3, client.getTelephone().getId());
 	}
 	
 	@Test
@@ -237,6 +238,6 @@ public class SalespersonServiceTest extends BaseTest {
 	void findByCpfNotFoundTest() {
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.findByCpf("999.888.100-11"));
-		assertEquals("cpf: 999.888.100-11 não encontrado no vendedor", exception.getMessage());
+		assertEquals("cpf: 999.888.100-11 não encontrado no cliente", exception.getMessage());
 	}
 }
