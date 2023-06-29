@@ -13,40 +13,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.trier.bookstore.bookstore.models.City;
-import br.com.trier.bookstore.bookstore.services.CityService;
+import br.com.trier.bookstore.bookstore.models.Genre;
+import br.com.trier.bookstore.bookstore.services.GenreService;
 
 @RestController
-@RequestMapping("/city")
-public class CityResource {
+@RequestMapping("/genre")
+public class GenreResource {
 
 	@Autowired
-	private CityService service;
+	GenreService service;
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<City> findById(@PathVariable Integer id){
+	public ResponseEntity<Genre> findById(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<City>> findAll(){
+	public ResponseEntity<List<Genre>> findAll(){
 		return ResponseEntity.ok(service.findAll());
 	}
 	
-	@GetMapping("/name/{name}")
-	public ResponseEntity<City> findByNameIgnoreCase(@PathVariable String name){
-		return ResponseEntity.ok(service.findByNameIgnoreCase(name));
+	@GetMapping("/description/{description}")
+	public ResponseEntity<Genre> findById(@PathVariable String description){
+		return ResponseEntity.ok(service.findByDescritpionIgnoreCase(description));
 	}
 	
 	@PostMapping
-	public ResponseEntity<City> insert(@RequestBody City city){
-		return ResponseEntity.ok(service.insert(city));
+	public ResponseEntity<Genre> insert(@RequestBody Genre genre){
+		return ResponseEntity.ok(service.insert(genre));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<City> update(@PathVariable Integer id, @RequestBody City city){
-		city.setId(id);
-		return ResponseEntity.ok(service.update(city));
+	public ResponseEntity<Genre> update(@PathVariable Integer id, @RequestBody Genre genre){
+		genre.setId(id);
+		return ResponseEntity.ok(service.update(genre));
 	}
 	
 	@DeleteMapping("/{id}")

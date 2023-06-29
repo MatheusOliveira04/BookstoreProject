@@ -1,5 +1,6 @@
 package br.com.trier.bookstore.bookstore.models;
 
+import br.com.trier.bookstore.bookstore.models.dto.SaleDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,4 +34,14 @@ public class Sale {
 	@ManyToOne
 	@JoinColumn(name = "vendedor")
 	private Salesperson salesperson;
+	
+	public Sale(SaleDTO dto, Client client, Salesperson salesperson) {
+		this(dto.getId(), client, salesperson);
+	}
+	
+	public SaleDTO toDTO() {
+		return new SaleDTO(getId(), getSalesperson().getId() ,getSalesperson().getName(),
+				getSalesperson().getCpf(), getClient().getId(), getClient().getName(),
+				getClient().getCpf());
+	}
 }

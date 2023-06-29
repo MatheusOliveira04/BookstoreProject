@@ -1,5 +1,6 @@
 package br.com.trier.bookstore.bookstore.models;
 
+import br.com.trier.bookstore.bookstore.models.dto.BookAuthorDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,4 +34,13 @@ public class BookAuthor {
 	@ManyToOne
 	@JoinColumn(name = "autor")
 	private Author author;
+	
+	public BookAuthor(BookAuthorDTO dto, Book book, Author author) {
+		this(dto.getId(), book, author);
+	}
+	
+	public BookAuthorDTO toDTO() {
+		return new BookAuthorDTO(getId(), getBook().getId(), getBook().getName(),
+				getAuthor().getId(), getAuthor().getName());
+	}
 }

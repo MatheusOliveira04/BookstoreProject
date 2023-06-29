@@ -13,40 +13,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.trier.bookstore.bookstore.models.City;
-import br.com.trier.bookstore.bookstore.services.CityService;
+import br.com.trier.bookstore.bookstore.models.Book;
+import br.com.trier.bookstore.bookstore.services.BookService;
 
 @RestController
-@RequestMapping("/city")
-public class CityResource {
+@RequestMapping("/book")
+public class BookResource {
 
 	@Autowired
-	private CityService service;
+	BookService service;
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<City> findById(@PathVariable Integer id){
+	public ResponseEntity<Book> findById(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<City>> findAll(){
+	public ResponseEntity<List<Book>> findAll(){
 		return ResponseEntity.ok(service.findAll());
 	}
 	
 	@GetMapping("/name/{name}")
-	public ResponseEntity<City> findByNameIgnoreCase(@PathVariable String name){
-		return ResponseEntity.ok(service.findByNameIgnoreCase(name));
+	public ResponseEntity<Book> findByName(@PathVariable String name){
+		return ResponseEntity.ok(service.findByName(name).get());
 	}
 	
 	@PostMapping
-	public ResponseEntity<City> insert(@RequestBody City city){
-		return ResponseEntity.ok(service.insert(city));
+	public ResponseEntity<Book> insert(@RequestBody Book book){
+		return ResponseEntity.ok(service.insert(book));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<City> update(@PathVariable Integer id, @RequestBody City city){
-		city.setId(id);
-		return ResponseEntity.ok(service.update(city));
+	public ResponseEntity<Book> update(@PathVariable Integer id, @RequestBody Book book){
+		book.setId(id);
+		return ResponseEntity.ok(service.update(book));
 	}
 	
 	@DeleteMapping("/{id}")

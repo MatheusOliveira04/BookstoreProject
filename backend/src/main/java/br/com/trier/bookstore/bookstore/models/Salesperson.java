@@ -1,5 +1,6 @@
 package br.com.trier.bookstore.bookstore.models;
 
+import br.com.trier.bookstore.bookstore.models.dto.PersonDTO;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,5 +33,12 @@ public class Salesperson extends Person {
 		this.id = id;
 	}
 
+	public Salesperson(PersonDTO dto, Address address, Telephone telephone) {
+		this(dto.getId(), dto.getName(), dto.getCpf(), address, telephone);
+	}
 	
+	public PersonDTO toDTO() {
+		return new PersonDTO(getId(), getName(), getCpf(),
+				getAddress().toDTO(), getTelephone().getId(), getTelephone().getNumber());
+	}
 }

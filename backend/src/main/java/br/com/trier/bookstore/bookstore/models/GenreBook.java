@@ -1,5 +1,6 @@
 package br.com.trier.bookstore.bookstore.models;
 
+import br.com.trier.bookstore.bookstore.models.dto.GenreBookDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,4 +34,13 @@ public class GenreBook {
 	@ManyToOne
 	@JoinColumn(name = "genero", nullable = false)
 	private Genre genre;
+	
+	public GenreBook(GenreBookDTO dto, Book book , Genre genre) {
+		this(dto.getId(), book, genre);
+	}
+	
+	public GenreBookDTO toDTO() {
+		return new GenreBookDTO(getId(), getBook().getId(), getBook().getName(),
+				getGenre().getId(), getGenre().getDescription());
+	}
 }

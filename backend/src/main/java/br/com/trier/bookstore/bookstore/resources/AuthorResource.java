@@ -13,40 +13,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.trier.bookstore.bookstore.models.City;
-import br.com.trier.bookstore.bookstore.services.CityService;
+import br.com.trier.bookstore.bookstore.models.Author;
+import br.com.trier.bookstore.bookstore.services.AuthorService;
 
 @RestController
-@RequestMapping("/city")
-public class CityResource {
+@RequestMapping("/author")
+public class AuthorResource {
 
 	@Autowired
-	private CityService service;
+	AuthorService service;
 	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<City> findById(@PathVariable Integer id){
+	public ResponseEntity<Author> findById(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<City>> findAll(){
+	public ResponseEntity<List<Author>> findAll(){
 		return ResponseEntity.ok(service.findAll());
 	}
 	
-	@GetMapping("/name/{name}")
-	public ResponseEntity<City> findByNameIgnoreCase(@PathVariable String name){
-		return ResponseEntity.ok(service.findByNameIgnoreCase(name));
-	}
-	
 	@PostMapping
-	public ResponseEntity<City> insert(@RequestBody City city){
-		return ResponseEntity.ok(service.insert(city));
+	public ResponseEntity<Author> insert(@RequestBody Author author){
+		return ResponseEntity.ok(service.insert(author));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<City> update(@PathVariable Integer id, @RequestBody City city){
-		city.setId(id);
-		return ResponseEntity.ok(service.update(city));
+	public ResponseEntity<Author> update(@PathVariable Integer id, @RequestBody Author author){
+		author.setId(id);
+		return ResponseEntity.ok(service.update(author));
 	}
 	
 	@DeleteMapping("/{id}")

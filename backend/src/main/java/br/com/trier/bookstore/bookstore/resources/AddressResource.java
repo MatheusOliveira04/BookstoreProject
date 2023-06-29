@@ -1,4 +1,4 @@
-package br.com.trier.bookstore.bookstore.resources.exceptions;
+package br.com.trier.bookstore.bookstore.resources;
 
 import java.util.List;
 
@@ -19,14 +19,14 @@ import br.com.trier.bookstore.bookstore.services.AddressService;
 import br.com.trier.bookstore.bookstore.services.CityService;
 
 @RestController
-@RequestMapping("/endereco")
+@RequestMapping("/address")
 public class AddressResource {
 
 	@Autowired
-	AddressService service;
+	private AddressService service;
 	
 	@Autowired
-	CityService cityService;
+	private CityService cityService;
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<AddressDTO> findById(@PathVariable Integer id){
@@ -45,7 +45,7 @@ public class AddressResource {
 	public ResponseEntity<List<AddressDTO>> findByCity(@PathVariable Integer idCity){
 		return ResponseEntity.ok(service.findByCity(cityService.findById(idCity))
 				.stream()
-				.map(address -> address.toDTO())
+				.map(x -> x.toDTO())
 				.toList());
 	}
 	
