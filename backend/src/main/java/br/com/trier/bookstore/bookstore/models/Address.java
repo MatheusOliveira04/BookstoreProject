@@ -1,5 +1,6 @@
 package br.com.trier.bookstore.bookstore.models;
 
+import br.com.trier.bookstore.bookstore.models.dto.AddressDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,4 +36,13 @@ public class Address {
 	@ManyToOne
 	@JoinColumn(name = "cidade", nullable = false)
 	private City city;
+	
+	public Address (AddressDTO dto, City city) {
+		this (dto.getId(), dto.getStreet(), dto.getNeighborhood(), city);
+	}
+
+	public AddressDTO toDTO() {
+		return new AddressDTO (getId(), getStreet(), getNeighborhood(),
+				getCity().getId(), getCity().getName(), getCity().getUf());
+	}
 }
