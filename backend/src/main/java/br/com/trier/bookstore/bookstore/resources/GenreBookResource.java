@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,11 +33,13 @@ public class GenreBookResource {
 	@Autowired
 	GenreService genreService;
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/{id}")
 	public ResponseEntity<GenreBookDTO> findById(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findById(id).toDTO());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping
 	public ResponseEntity<List<GenreBookDTO>> findAll(){
 		return ResponseEntity.ok(service.findAll()
@@ -45,6 +48,7 @@ public class GenreBookResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/book/{idBook}")
 	public ResponseEntity<List<GenreBookDTO>> findByBook(@PathVariable Integer idBook){
 		return ResponseEntity.ok(service.findByBook(bookService.findById(idBook))
@@ -53,6 +57,7 @@ public class GenreBookResource {
 				.toList());
 	}
 
+	@Secured({"ROLE_USER"})
 	@GetMapping("/genre/{idGenre}")
 	public ResponseEntity<List<GenreBookDTO>> findByGenre(@PathVariable Integer idGenre){
 		return ResponseEntity.ok(service.findByGenre(genreService.findById(idGenre))
@@ -61,6 +66,7 @@ public class GenreBookResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping
 	public ResponseEntity<GenreBookDTO> insert(@RequestBody GenreBookDTO dto){
 		GenreBook genreBook = new GenreBook(dto,
@@ -69,6 +75,7 @@ public class GenreBookResource {
 		return ResponseEntity.ok(service.insert(genreBook).toDTO());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/{id}")
 	public ResponseEntity<GenreBookDTO> update(
 			@PathVariable Integer id, 
@@ -80,6 +87,7 @@ public class GenreBookResource {
 		return ResponseEntity.ok(service.update(genreBook).toDTO());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);

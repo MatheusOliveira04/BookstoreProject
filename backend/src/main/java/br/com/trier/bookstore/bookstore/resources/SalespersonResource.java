@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,11 +33,13 @@ public class SalespersonResource {
 	@Autowired
 	private TelephoneService telephoneService;
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/{id}")
 	public ResponseEntity<PersonDTO> findById(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findById(id).toDTO());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping
 	public ResponseEntity<List<PersonDTO>> findAll(){
 		return ResponseEntity.ok(service.findAll()
@@ -45,11 +48,13 @@ public class SalespersonResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/cpf/{cpf}")
 	public ResponseEntity<PersonDTO> findByCpf(@PathVariable String cpf){
 		return ResponseEntity.ok(service.findByCpf(cpf).toDTO());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/address/{idAddress}")
 	public ResponseEntity<List<PersonDTO>> findByAddress(@PathVariable Integer idAddress){
 		return ResponseEntity.ok(service.findByAddressOrderByName(addressService.findById(idAddress))
@@ -58,6 +63,7 @@ public class SalespersonResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/telephone/{idTelephone}")
 	public ResponseEntity<List<PersonDTO>> findByTelephone(@PathVariable Integer idTelephone){
 		return ResponseEntity.ok(service.findByTelephoneOrderByName(
@@ -67,6 +73,7 @@ public class SalespersonResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping
 	public ResponseEntity<PersonDTO> insert(@RequestBody PersonDTO dto){
 		Salesperson salesperson = new Salesperson(
@@ -75,6 +82,8 @@ public class SalespersonResource {
 				telephoneService.findById(dto.getTelephoneId()));
 		return ResponseEntity.ok(service.insert(salesperson).toDTO());
 	}
+	
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/{id}")
 	public ResponseEntity<PersonDTO> update(@PathVariable Integer id, @RequestBody PersonDTO dto){
 		Salesperson salesperson = new Salesperson(
@@ -85,6 +94,7 @@ public class SalespersonResource {
 		return ResponseEntity.ok(service.update(salesperson).toDTO());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);

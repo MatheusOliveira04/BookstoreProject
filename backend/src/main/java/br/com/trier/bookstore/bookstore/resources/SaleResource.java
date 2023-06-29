@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,11 +33,13 @@ public class SaleResource {
 	@Autowired
 	SalespersonService salespersonService;
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/{id}")
 	public ResponseEntity<SaleDTO> findById(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findById(id).toDTO());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping
 	public ResponseEntity<List<SaleDTO>> findAll(){
 		return ResponseEntity.ok(service.findAll()
@@ -45,7 +48,7 @@ public class SaleResource {
 				.toList());
 	}
 	
-
+	@Secured({"ROLE_USER"})
 	@GetMapping("/salesperson/{id}")
 	public ResponseEntity<List<SaleDTO>> findByAuthor(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findBySalesperson(salespersonService.findById(id))
@@ -54,6 +57,7 @@ public class SaleResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/client/{id}")
 	public ResponseEntity<List<SaleDTO>> findByClient(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findByClient(clientService.findById(id))
@@ -62,6 +66,7 @@ public class SaleResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping
 	public ResponseEntity<SaleDTO> insert(@RequestBody SaleDTO dto){
 		Sale sale = new Sale(dto, clientService.findById(dto.getClientId()), 
@@ -69,6 +74,7 @@ public class SaleResource {
 		return ResponseEntity.ok(service.insert(sale).toDTO());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/{id}")
 	public ResponseEntity<SaleDTO> update(@PathVariable Integer id, @RequestBody SaleDTO dto){
 		Sale sale = new Sale(dto, clientService.findById(dto.getClientId()), 
@@ -77,6 +83,7 @@ public class SaleResource {
 		return ResponseEntity.ok(service.update(sale).toDTO());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);

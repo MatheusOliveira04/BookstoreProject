@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,11 +29,13 @@ public class AddressResource {
 	@Autowired
 	private CityService cityService;
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/{id}")
 	public ResponseEntity<AddressDTO> findById(@PathVariable Integer id){
 		return ResponseEntity.ok(service.findById(id).toDTO());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping
 	public ResponseEntity<List<AddressDTO>> findAll(){
 		return ResponseEntity.ok(service.findAll()
@@ -41,6 +44,7 @@ public class AddressResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_USER"})
 	@GetMapping("/city/{idCity}")
 	public ResponseEntity<List<AddressDTO>> findByCity(@PathVariable Integer idCity){
 		return ResponseEntity.ok(service.findByCity(cityService.findById(idCity))
@@ -49,12 +53,14 @@ public class AddressResource {
 				.toList());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping
 	public ResponseEntity<AddressDTO> insert(@RequestBody AddressDTO dto){
 		Address address = new Address(dto, cityService.findById(dto.getCityId()));
 		return ResponseEntity.ok(service.insert(address).toDTO());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/{id}")
 	public ResponseEntity<AddressDTO> update(@PathVariable Integer id, @RequestBody AddressDTO dto){
 		Address address = new Address(dto, cityService.findById(dto.getCityId()));	
@@ -62,6 +68,7 @@ public class AddressResource {
 		return ResponseEntity.ok(service.update(address).toDTO());
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);

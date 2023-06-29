@@ -1,0 +1,1 @@
+delete from cidade where id_cidade > 0;
