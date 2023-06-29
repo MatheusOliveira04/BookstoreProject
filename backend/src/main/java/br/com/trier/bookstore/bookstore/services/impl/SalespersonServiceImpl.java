@@ -32,7 +32,7 @@ public class SalespersonServiceImpl implements SalespersonService{
 			throw new IntegrityViolation("Cpf do vendedor está vazio");
 		}
 		 String cpfFormat = "^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}$";
-		 if(cpfFormat.matches(salesperson.getCpf())) {
+		 if(!salesperson.getCpf().matches(cpfFormat)) {
 			 throw new IntegrityViolation(
 					 "Formato do cpf inválido, favor utilizar o formato: 000.000.000-00");
 		 }
@@ -80,8 +80,8 @@ public class SalespersonServiceImpl implements SalespersonService{
 	}
 
 	@Override
-	public Optional<Salesperson> findByAddressOrderByName(Address address) {
-		Optional<Salesperson> salesperson = repository.findByAddressOrderByName(address);
+	public List<Salesperson> findByAddressOrderByName(Address address) {
+		List<Salesperson> salesperson = repository.findByAddressOrderByName(address);
 		if(salesperson.isEmpty()) {
 			throw new ObjectNotFound(
 					"O endereço: %s do vendedor não foi encontrado".formatted(address.getId()));
@@ -90,11 +90,11 @@ public class SalespersonServiceImpl implements SalespersonService{
 	}
 
 	@Override
-	public Optional<Salesperson> findByTelephoneOrderByName(Telephone telephone) {
-		Optional<Salesperson> salesperson = repository.findByTelephoneOrderByName(telephone);
+	public List<Salesperson> findByTelephoneOrderByName(Telephone telephone) {
+		List<Salesperson> salesperson = repository.findByTelephoneOrderByName(telephone);
 		if(salesperson.isEmpty()) {
 			throw new ObjectNotFound(
-					"O Telefone: %s do vendedor não encontrado".formatted(telephone.getId()));
+					"O Telefone: %s do vendedor não foi encontrado".formatted(telephone.getId()));
 		}
 		return salesperson;
 	}

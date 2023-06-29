@@ -8,7 +8,7 @@ import br.com.trier.bookstore.bookstore.models.GenreBook;
 
 public interface GenreBookService {
 
-	List<GenreBook> listAll();
+	List<GenreBook> findAll();
 	
 	GenreBook findById(Integer id);
 	

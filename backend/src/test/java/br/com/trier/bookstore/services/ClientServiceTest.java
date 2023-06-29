@@ -15,6 +15,7 @@ import br.com.trier.bookstore.BaseTest;
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.City;
 import br.com.trier.bookstore.bookstore.models.Client;
+import br.com.trier.bookstore.bookstore.models.Salesperson;
 import br.com.trier.bookstore.bookstore.models.Telephone;
 import br.com.trier.bookstore.bookstore.services.ClientService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
@@ -73,7 +74,7 @@ public class ClientServiceTest extends BaseTest{
 	void insertTest() {
 		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
 		Telephone telephone = new Telephone(3, "(00)00000-0000");
-		Client client = new Client(1, "insert","100.100.100-11", address, telephone);
+		Client client = new Client(2, "insert","100.100.100-11", address, telephone);
 		client = service.insert(client);
 		assertNotNull(client);
 		assertEquals(1, client.getId());
@@ -103,6 +104,21 @@ public class ClientServiceTest extends BaseTest{
 		var exception = assertThrows(IntegrityViolation.class, 
 				() -> service.insert(client));
 		assertEquals("Cpf do cliente está vazio", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste inserir com formato cpf inválido")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	void insertCpfFormatInvalidTest() {
+		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
+		Telephone telephone = new Telephone(3, "(00)00000-0000");
+		Client client = new Client(1, "insert" ,"00141100010001100", address, telephone);
+		var exception = assertThrows(IntegrityViolation.class, 
+				() -> service.insert(client));
+		assertEquals("Formato do cpf inválido, favor utilizar o formato: 000.000.000-00", 
+				exception.getMessage());
 	}
 	
 	@Test
@@ -165,6 +181,22 @@ public class ClientServiceTest extends BaseTest{
 	var exception = assertThrows(IntegrityViolation.class, 
 			() -> service.update(client));
 	assertEquals("Nome do cliente está vazio", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste atualiza com formato do cpf vazio")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
+	void updateCpfFormatInvalidTest() {
+		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
+		Telephone telephone = new Telephone(3, "(00)00000-0000");
+		Client client = new Client(3, "update" ,"1100011--0", address, telephone);
+		var exception = assertThrows(IntegrityViolation.class, 
+				() -> service.update(client));
+		assertEquals("Formato do cpf inválido, favor utilizar o formato: 000.000.000-00", 
+				exception.getMessage());
 	}
 	
 	@Test
@@ -239,5 +271,55 @@ public class ClientServiceTest extends BaseTest{
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.findByCpf("999.888.100-11"));
 		assertEquals("cpf: 999.888.100-11 não encontrado no cliente", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por endereço")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
+	void findByAddressTest() {
+		Address address = new Address(3, null, null, null);
+		List<Client> list = service.findByAddressOrderByName(address);
+		assertEquals(2, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por endereço nenhum encontrado")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
+	void findByAddresNotFoundTest() {
+		Address address = new Address(10, null, null, null);
+		var exception = assertThrows(ObjectNotFound.class,
+				() -> service.findByAddressOrderByName(address));
+		assertEquals("O endereço: 10 do cliente não foi encontrado", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por telefone")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
+	void findByTelephoneTest() {
+		Telephone telephone = new Telephone(3, null);
+		List<Client> list = service.findByTelephoneOrderByName(telephone);
+		assertEquals(2, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por telefone nenhum encontrado")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/client.sql"})
+	void findByTelephoneNotFoundTest() {
+		Telephone telephone = new Telephone(10, null);
+		var exception = assertThrows(ObjectNotFound.class,
+				() -> service.findByTelephoneOrderByName(telephone));
+		assertEquals("O telefone: 10 do cliente não foi encontrado", exception.getMessage());
 	}
 }

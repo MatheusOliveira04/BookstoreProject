@@ -15,6 +15,7 @@ import br.com.trier.bookstore.BaseTest;
 import br.com.trier.bookstore.bookstore.models.Author;
 import br.com.trier.bookstore.bookstore.models.Book;
 import br.com.trier.bookstore.bookstore.models.BookAuthor;
+import br.com.trier.bookstore.bookstore.models.Client;
 import br.com.trier.bookstore.bookstore.services.BookAuthorService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
@@ -128,6 +129,28 @@ public class BookAuthorServiceTest extends BaseTest{
 		var exception = assertThrows(IntegrityViolation.class, () -> service.update(bookAuthor));
 		assertEquals("Autor está vazio", exception.getMessage());
 	}
+	
+	@Test
+	@DisplayName("Teste deletar")
+	@Sql({"classpath:/resources/sqls/author.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/book_author.sql"})
+	void deleteTest() {
+		List<BookAuthor> list = service.findAll();
+		assertEquals(2, list.size());
+		service.delete(3);
+		list = service.findAll();
+		assertEquals(1, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste deletar id não encontrado")
+	void deleteIdNotFoundTest() {
+		var exception = assertThrows(ObjectNotFound.class, 
+				() -> service.delete(10));
+		assertEquals("Id: 10 do livro do autor não encontrado", exception.getMessage());
+	}
+	
 	
 	@Test
 	@DisplayName("Teste buscar por livro")

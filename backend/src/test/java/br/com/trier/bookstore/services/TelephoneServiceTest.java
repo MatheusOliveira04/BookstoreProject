@@ -75,6 +75,16 @@ public class TelephoneServiceTest extends BaseTest {
 	}
 	
 	@Test
+	@DisplayName("Teste inserir com número nulo")
+	void insertNumberNullTest() {
+		Telephone telephone = new Telephone(1,null);
+		var exception = assertThrows(IntegrityViolation.class, 
+				() -> service.insert(telephone));
+		assertEquals("Número do telefone está vazio",
+				exception.getMessage());
+	}
+	
+	@Test
 	@DisplayName("Teste atualiza")
 	@Sql({"classpath:/resources/sqls/telephone.sql"})
 	void updateTest() {
@@ -92,6 +102,16 @@ public class TelephoneServiceTest extends BaseTest {
 		var exception = assertThrows(IntegrityViolation.class, 
 				() -> service.update(telephone));
 		assertEquals("Formato de número inválido, favor utilizar o formato: (00)00000-0000",
+				exception.getMessage());
+	}
+	@Test
+	@DisplayName("Teste atualiza com número nulo")
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	void updateNumberNullTest() {
+		Telephone telephone = new Telephone(3, null);
+		var exception = assertThrows(IntegrityViolation.class, 
+				() -> service.update(telephone));
+		assertEquals("Número do telefone está vazio",
 				exception.getMessage());
 	}
 	

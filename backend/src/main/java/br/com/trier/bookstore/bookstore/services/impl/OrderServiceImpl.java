@@ -27,21 +27,21 @@ public class OrderServiceImpl implements OrderService {
 	}
 	private void validSale(Order order) {
 		if(order.getSale() == null) {
-			throw new IntegrityViolation("Venda está vazio");
+			throw new IntegrityViolation("Venda está vazia");
 		}
 	}
 	
 	private void validQuantityBook(Order order) {
 		if(order.getQuantityBook() == null) {
-			throw new IntegrityViolation("Quantidade está vazio");
+			throw new IntegrityViolation("Quantidade de livro está vazio");
 		}
 	}
 	
 	@Override
-	public List<Order> listAll() {
+	public List<Order> findAll() {
 		List<Order> list = repository.findAll();
 		if(list.isEmpty()){
-			throw new ObjectNotFound("Nenhum perdido encontrado");
+			throw new ObjectNotFound("Nenhum pedido encontrado");
 		}
 		return list;
 	}
@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order findById(Integer id) {
 		return repository.findById(id).orElseThrow(
-				() -> new ObjectNotFound("Id: %s do pedido não encontrado"));
+				() -> new ObjectNotFound("Id: %s do pedido não encontrado".formatted(id)));
 	}
 
 	@Override
@@ -77,19 +77,19 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Optional<Order> findByBook(Book book) {
-		Optional<Order> order = repository.findByBook(book);
+	public List<Order> findByBook(Book book) {
+		List<Order> order = repository.findByBook(book);
 		if(order.isEmpty()){
-			throw new ObjectNotFound("Nenhum Livro encontrado");
+			throw new ObjectNotFound("Nenhum Livro encontrado no pedido");
 		}
 		return order;
 	}
 
 	@Override
-	public Optional<Order> findBySale(Sale sale) {
-		Optional<Order> order = repository.findBySale(sale);
+	public List<Order> findBySale(Sale sale) {
+		List<Order> order = repository.findBySale(sale);
 		if(order.isEmpty()){
-			throw new ObjectNotFound("Nenhuma venda encontrada");
+			throw new ObjectNotFound("Nenhuma venda encontrada no pedido");
 		}
 		return order;
 	}

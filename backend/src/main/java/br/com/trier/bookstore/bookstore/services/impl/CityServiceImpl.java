@@ -28,11 +28,8 @@ public class CityServiceImpl implements CityService {
 	}
 	
 	private void validUf(City city) {
-		if(city.getUf().trim().length() != 2) {
+		if(city.getUf().trim().length() != 2 || city.getUf() == null) {
 			throw new IntegrityViolation("Uf da cidade deve conter 2 caracteres");
-		}
-		if(city.getUf() == null) {
-			throw new IntegrityViolation("Uf da cidade está vazio, deve conter 2 caracteres");
 		}
 	}
 	

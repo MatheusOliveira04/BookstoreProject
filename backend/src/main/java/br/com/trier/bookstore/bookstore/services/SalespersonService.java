@@ -1,7 +1,6 @@
 package br.com.trier.bookstore.bookstore.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.Salesperson;
@@ -21,7 +20,7 @@ public interface SalespersonService {
 	
 	Salesperson findByCpf(String cpf);
 	
-	Optional<Salesperson> findByAddressOrderByName(Address address);
+	List<Salesperson> findByAddressOrderByName(Address address);
 	
-	Optional<Salesperson> findByTelephoneOrderByName(Telephone telephone);
+	List<Salesperson> findByTelephoneOrderByName(Telephone telephone);
 }

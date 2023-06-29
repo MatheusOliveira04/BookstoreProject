@@ -51,14 +51,14 @@ public class GenreBookServiceTest extends BaseTest{
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	@Sql({"classpath:/resources/sqls/genre_book.sql"})
 	void findAllTest(){
-		List<GenreBook> list = service.listAll();
+		List<GenreBook> list = service.findAll();
 		assertEquals(2, list.size());
 	}
 	
 	@Test
 	@DisplayName("Teste buscar todos sem nenhum cadastro")
 	void findAllEmptyTest() {
-		var exception = assertThrows(ObjectNotFound.class, () -> service.listAll());
+		var exception = assertThrows(ObjectNotFound.class, () -> service.findAll());
 		assertEquals("Nenhum gênero livro encontrado", exception.getMessage());
 	}
 	
@@ -144,10 +144,10 @@ public class GenreBookServiceTest extends BaseTest{
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	@Sql({"classpath:/resources/sqls/genre_book.sql"})
 	void deleteTest() {
-		List<GenreBook> list = service.listAll();
+		List<GenreBook> list = service.findAll();
 		assertEquals(2, list.size());
 		service.delete(3);
-		list = service.listAll();
+		list = service.findAll();
 		assertEquals(1, list.size());
 	}
 	
@@ -159,4 +159,49 @@ public class GenreBookServiceTest extends BaseTest{
 		assertEquals("Id: 10 do gênero livro não encontrado", exception.getMessage());
 	}
 	
+	@Test
+	@DisplayName("Teste buscar por livro")
+	@Sql({"classpath:/resources/sqls/genre.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/genre_book.sql"})
+	void findByBookTest() {
+		Book book = new Book(3,null);
+		List<GenreBook> list = service.findByBook(book);
+		assertEquals(2, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por livro nenhum encontrado")
+	@Sql({"classpath:/resources/sqls/genre.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/genre_book.sql"})
+	void findByBookNotFoundTest() {
+		Book book = new Book(10,null);
+		var exception = assertThrows(ObjectNotFound.class, 
+				() -> service.findByBook(book));
+		assertEquals("Nenhum livro encontrado", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por gênero")
+	@Sql({"classpath:/resources/sqls/genre.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/genre_book.sql"})
+	void findByGenreTest() {
+		Genre genre = new Genre(3,null);
+		List<GenreBook> list = service.findByGenre(genre);
+		assertEquals(2, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por gênero nenhum encontrado")
+	@Sql({"classpath:/resources/sqls/genre.sql"})
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	@Sql({"classpath:/resources/sqls/genre_book.sql"})
+	void findByGenreNotFoundTest() {
+		Genre genre = new Genre(10,null);
+		var exception = assertThrows(ObjectNotFound.class, 
+				() -> service.findByGenre(genre));
+		assertEquals("Nenhum gênero encontrado", exception.getMessage());
+	}
 }

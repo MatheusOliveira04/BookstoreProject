@@ -105,6 +105,18 @@ public class SalespersonServiceTest extends BaseTest {
 	}
 	
 	@Test
+	@DisplayName("Teste inserir com formato cpf inválido")
+	void insertCpfFormatInvalidTest() {
+		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
+		Telephone telephone = new Telephone(3, "(00)00000-0000");
+		Salesperson salerperson = new Salesperson(3, "insert" ,"00111000---0", address, telephone);
+		var exception = assertThrows(IntegrityViolation.class, 
+				() -> service.insert(salerperson));
+		assertEquals("Formato do cpf inválido, favor utilizar o formato: 000.000.000-00", 
+				exception.getMessage());
+	}
+	
+	@Test
 	@DisplayName("Teste inserir com cpf já existente")
 	@Sql({"classpath:/resources/sqls/city.sql"})
 	@Sql({"classpath:/resources/sqls/address.sql"})
@@ -180,6 +192,22 @@ public class SalespersonServiceTest extends BaseTest {
 				() -> service.update(salerperson));
 		assertEquals("Cpf do vendedor está vazio", exception.getMessage());
 	}
+
+	@Test
+	@DisplayName("Teste atualiza com formato do cpf vazio")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	void updateCpfFormatInvalidTest() {
+		Address address = new Address(3, "rua 1", "Bairro 1", new City(3, "cidade 1", "UF"));
+		Telephone telephone = new Telephone(3, "(00)00000-0000");
+		Salesperson salerperson = new Salesperson(3, "update" ,"1100011--0", address, telephone);
+		var exception = assertThrows(IntegrityViolation.class, 
+				() -> service.update(salerperson));
+		assertEquals("Formato do cpf inválido, favor utilizar o formato: 000.000.000-00", 
+				exception.getMessage());
+	}
 	
 	@Test
 	@DisplayName("Teste atualizar com cpf já existente")
@@ -238,5 +266,55 @@ public class SalespersonServiceTest extends BaseTest {
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.findByCpf("999.888.100-11"));
 		assertEquals("cpf: 999.888.100-11 não encontrado no vendedor", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por endereço")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	void findByAddressTest() {
+		Address address = new Address(3, null, null, null);
+		List<Salesperson> list = service.findByAddressOrderByName(address);
+		assertEquals(2, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por endereço nenhum encontrado")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	void findByAddresNotFoundTest() {
+		Address address = new Address(10, null, null, null);
+		var exception = assertThrows(ObjectNotFound.class,
+				() -> service.findByAddressOrderByName(address));
+		assertEquals("O endereço: 10 do vendedor não foi encontrado", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por telefone")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	void findByTelephoneTest() {
+		Telephone telephone = new Telephone(3, null);
+		List<Salesperson> list = service.findByTelephoneOrderByName(telephone);
+		assertEquals(2, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por telefone nenhum encontrado")
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	@Sql({"classpath:/resources/sqls/telephone.sql"})
+	@Sql({"classpath:/resources/sqls/salesperson.sql"})
+	void findByTelephoneNotFoundTest() {
+		Telephone telephone = new Telephone(10, null);
+		var exception = assertThrows(ObjectNotFound.class,
+				() -> service.findByTelephoneOrderByName(telephone));
+		assertEquals("O Telefone: 10 do vendedor não foi encontrado", exception.getMessage());
 	}
 }

@@ -1,6 +1,7 @@
 package br.com.trier.bookstore.bookstore.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,14 @@ public class BookServiceImpl implements BookService{
 		Book book = findById(id);
 		repository.delete(book);
 		
+	}
+
+	@Override
+	public Optional<Book> findByName(String name) {
+		Optional<Book> book = repository.findByName(name);
+		if(book.isEmpty()) {
+			throw new ObjectNotFound("Nenhum livro contém o nome: %s".formatted(name));
+		}
+		return book;
 	}
 }

@@ -32,7 +32,7 @@ public class ClientServiceImpl implements ClientService{
 			throw new IntegrityViolation("Cpf do cliente está vazio");
 		}
 		 String cpfFormat = "^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}$";
-		 if(cpfFormat.matches(client.getCpf())) {
+		 if(!client.getCpf().matches(cpfFormat)) {
 			 throw new IntegrityViolation(
 					 "Formato do cpf inválido, favor utilizar o formato: 000.000.000-00");
 		 }
@@ -80,8 +80,8 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public Optional<Client> findByAddressOrderByName(Address address) {
-		Optional<Client> client = repository.findByAddressOrderByName(address);
+	public List<Client> findByAddressOrderByName(Address address) {
+		List<Client> client = repository.findByAddressOrderByName(address);
 		if(client.isEmpty()) {
 			throw new ObjectNotFound(
 					"O endereço: %s do cliente não foi encontrado".formatted(address.getId()));
@@ -90,10 +90,11 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public Optional<Client> findByTelephoneOrderByName(Telephone telephone) {
-		Optional<Client> client = repository.findByTelephoneOrderByName(telephone);
+	public List<Client> findByTelephoneOrderByName(Telephone telephone) {
+		List<Client> client = repository.findByTelephoneOrderByName(telephone);
 		if(client.isEmpty()) {
-			throw new ObjectNotFound("O telefone: %s do cliente não foi encontrado");
+			throw new ObjectNotFound("O telefone: %s do cliente não foi encontrado"
+					.formatted(telephone.getId()));
 		}
 		return client;
 	}

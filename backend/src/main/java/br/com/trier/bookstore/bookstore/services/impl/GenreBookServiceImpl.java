@@ -33,7 +33,7 @@ public class GenreBookServiceImpl implements GenreBookService{
 	
 	
 	@Override
-	public List<GenreBook> listAll() {
+	public List<GenreBook> findAll() {
 		List<GenreBook> list = repository.findAll();
 		if(list.isEmpty()){
 			throw new ObjectNotFound("Nenhum gênero livro encontrado");

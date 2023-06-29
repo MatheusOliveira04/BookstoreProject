@@ -1,9 +1,11 @@
 package br.com.trier.bookstore.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.bookstore.BaseTest;
 import br.com.trier.bookstore.bookstore.models.Book;
-import br.com.trier.bookstore.bookstore.models.Client;
 import br.com.trier.bookstore.bookstore.services.BookService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
@@ -53,6 +54,7 @@ public class BookServiceTest extends BaseTest{
 		var exception = assertThrows(ObjectNotFound.class, () -> service.findAll());
 		assertEquals("Nenhum livro encontrado", exception.getMessage());
 	}
+	
 	@Test
 	@DisplayName("Teste inserir")
 	void insertTest() {
@@ -105,5 +107,22 @@ public class BookServiceTest extends BaseTest{
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.delete(10));
 		assertEquals("Id: 10 do livro não encontrado", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por nome")
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	void findByBookTest() {
+		Optional<Book> book = service.findByName("Mar");
+		assertNotNull(book);
+		assertEquals(3, book.get().getId());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por nome nenhum encontrado")
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	void findByBookEmptyTest() {
+		var exception = assertThrows(ObjectNotFound.class, () -> service.findByName("teste"));
+		assertEquals("Nenhum livro contém o nome: teste", exception.getMessage());
 	}
 }

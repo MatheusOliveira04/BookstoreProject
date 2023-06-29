@@ -14,6 +14,7 @@ import br.com.trier.bookstore.bookstore.services.CityService;
 import br.com.trier.bookstore.bookstore.services.ClientService;
 import br.com.trier.bookstore.bookstore.services.GenreBookService;
 import br.com.trier.bookstore.bookstore.services.GenreService;
+import br.com.trier.bookstore.bookstore.services.OrderService;
 import br.com.trier.bookstore.bookstore.services.SaleService;
 import br.com.trier.bookstore.bookstore.services.SalespersonService;
 import br.com.trier.bookstore.bookstore.services.TelephoneService;
@@ -25,6 +26,7 @@ import br.com.trier.bookstore.bookstore.services.impl.CityServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.ClientServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.GenreBookServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.GenreServiceImpl;
+import br.com.trier.bookstore.bookstore.services.impl.OrderServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.SaleServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.SalespersonServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.TelephoneServiceImpl;
@@ -87,5 +89,10 @@ public class BaseTest {
 	@Bean
 	public SaleService saleService() {
 		return new SaleServiceImpl();
+	}
+	
+	@Bean
+	public OrderService orderService() {
+		return new OrderServiceImpl();
 	}
 }

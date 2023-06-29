@@ -1,6 +1,6 @@
 package br.com.trier.bookstore.bookstore.repositories;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ import br.com.trier.bookstore.bookstore.models.Telephone;
 public interface SalespersonRepository extends JpaRepository<Salesperson, Integer>{
 	
 	Salesperson findByCpf(String cpf);
-	Optional<Salesperson> findByAddressOrderByName(Address address);
-	Optional<Salesperson> findByTelephoneOrderByName(Telephone telephone);
+	List<Salesperson> findByAddressOrderByName(Address address);
+	List<Salesperson> findByTelephoneOrderByName(Telephone telephone);
  
 }

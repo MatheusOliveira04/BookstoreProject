@@ -1,6 +1,5 @@
 package br.com.trier.bookstore.bookstore.services.impl;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ public class TelephoneServiceImpl implements TelephoneService{
 	TelephoneRepository repository;
 
 	private void validNumber(Telephone telephone) {
-		if(telephone.getNumber() == null || telephone.getNumber().trim().isEmpty()) {
-			throw new ObjectNotFound("Número do telefone está vazio");
+		if(telephone.getNumber() == null) {
+			throw new IntegrityViolation("Número do telefone está vazio");
 		}
 		String numberFormat = "^\\(\\d{2}\\)\\d{5}-\\d{4}$";
 		if(!telephone.getNumber().matches(numberFormat)) {

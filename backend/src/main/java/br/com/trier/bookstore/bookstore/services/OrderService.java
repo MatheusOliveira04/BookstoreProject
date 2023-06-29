@@ -9,7 +9,7 @@ import br.com.trier.bookstore.bookstore.models.Sale;
 
 public interface OrderService {
 
-	List<Order> listAll();
+	List<Order> findAll();
 	
 	Order findById(Integer id);
 	
@@ -19,7 +19,7 @@ public interface OrderService {
 	
 	void delete(Integer id);
 	
-	Optional<Order> findByBook(Book book);
+	List<Order> findByBook(Book book);
 	
-	Optional<Order> findBySale(Sale sale);
+	List<Order> findBySale(Sale sale);
 }

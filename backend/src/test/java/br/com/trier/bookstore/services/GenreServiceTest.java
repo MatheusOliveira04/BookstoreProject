@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.bookstore.BaseTest;
+import br.com.trier.bookstore.bookstore.models.Book;
 import br.com.trier.bookstore.bookstore.models.Client;
 import br.com.trier.bookstore.bookstore.models.Genre;
 import br.com.trier.bookstore.bookstore.services.GenreService;
@@ -40,6 +41,21 @@ public class GenreServiceTest extends BaseTest{
 	void findByIdNotFoundTest() {
 		var exception = assertThrows(ObjectNotFound.class, () -> service.findById(10));
 		assertEquals("Id: 10 do gênero não encontrado", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar todos")
+	@Sql({"classpath:/resources/sqls/genre.sql"})
+	void findAllTest(){
+		List<Genre> list = service.findAll();
+		assertEquals(2, list.size());
+	}
+	
+	@Test
+	@DisplayName("Teste buscar todos sem nenhum cadastro")
+	void findAllEmptyTest() {
+		var exception = assertThrows(ObjectNotFound.class, () -> service.findAll());
+		assertEquals("Nenhum gênero encontrado", exception.getMessage());
 	}
 	
 	@Test
