@@ -18,6 +18,7 @@ import br.com.trier.bookstore.bookstore.services.OrderService;
 import br.com.trier.bookstore.bookstore.services.SaleService;
 import br.com.trier.bookstore.bookstore.services.SalespersonService;
 import br.com.trier.bookstore.bookstore.services.TelephoneService;
+import br.com.trier.bookstore.bookstore.services.UserService;
 import br.com.trier.bookstore.bookstore.services.impl.AddressServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.AuthorServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.BookAuthorServiceImpl;
@@ -30,6 +31,7 @@ import br.com.trier.bookstore.bookstore.services.impl.OrderServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.SaleServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.SalespersonServiceImpl;
 import br.com.trier.bookstore.bookstore.services.impl.TelephoneServiceImpl;
+import br.com.trier.bookstore.bookstore.services.impl.UserServiceImpl;
 
 @TestConfiguration
 @SpringBootTest(classes = BookstoreApplication.class)
@@ -94,5 +96,10 @@ public class BaseTest {
 	@Bean
 	public OrderService orderService() {
 		return new OrderServiceImpl();
+	}
+	
+	@Bean
+	public UserService userService() {
+		return new UserServiceImpl();
 	}
 }

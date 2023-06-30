@@ -1,6 +1,7 @@
 package br.com.trier.bookstore.bookstore.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,10 @@ public class AuthorServiceImpl implements AuthorService {
 	private void validName(Author author) {
 		if(author.getName() == null || author.getName().trim().isEmpty()) {
 			throw new IntegrityViolation("Nome do autor está vazio");
+		}
+		Author find = repository.findByName(author.getName()).orElse(null);
+		if(find != null && find.getId() != author.getId()) {
+			throw new IntegrityViolation("O autor já contém o nome %s".formatted(author.getName()));
 		}
 	}
 	
@@ -56,6 +61,15 @@ public class AuthorServiceImpl implements AuthorService {
 		Author author = findById(id);
 		repository.delete(author);
 		
+	}
+
+	@Override
+	public Optional<Author> findByName(String name) {
+		Optional<Author> author = repository.findByName(name);
+		if(author.isEmpty()) {
+			throw new ObjectNotFound("Nenhum autor contém o nome: %s".formatted(name));
+		}
+		return author;
 	}
 
 }

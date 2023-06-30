@@ -24,6 +24,6 @@ public class Author {
 	@Column(name = "id_autor")
 	private Integer id;
 	
-	@Column(name = "nome_autor", nullable = false)
+	@Column(name = "nome_autor", nullable = false, unique = true)
 	private String name;
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.bookstore.BaseTest;
 import br.com.trier.bookstore.bookstore.models.Author;
-import br.com.trier.bookstore.bookstore.models.Book;
-import br.com.trier.bookstore.bookstore.models.GenreBook;
 import br.com.trier.bookstore.bookstore.services.AuthorService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
@@ -75,6 +74,15 @@ public class AuthorServiceTest extends BaseTest{
 	}
 
 	@Test
+	@DisplayName("Teste inserir com nome duplicado")
+	@Sql({"classpath:/resources/sqls/author.sql"})
+	void insertNameDuplicadedTest() {
+		var author = new Author(5, "Max");
+		var exception = assertThrows(IntegrityViolation.class, () -> service.insert(author));
+		assertEquals("O autor já contém o nome Max", exception.getMessage());
+	}
+
+	@Test
 	@DisplayName("Teste atualizar")
 	@Sql({"classpath:/resources/sqls/author.sql"})
 	void updateTest() {
@@ -102,6 +110,16 @@ public class AuthorServiceTest extends BaseTest{
 	}
 	
 	@Test
+	@DisplayName("Teste atualiza com nome duplicado")
+	@Sql({"classpath:/resources/sqls/author.sql"})
+	void updateNameDuplicadedTest() {
+		var author = new Author(4, "Max");
+		var exception = assertThrows(IntegrityViolation.class, () -> service.update(author));
+		assertEquals("O autor já contém o nome Max", exception.getMessage());
+	}
+
+	
+	@Test
 	@DisplayName("Teste deletar")
 	@Sql({"classpath:/resources/sqls/author.sql"})
 	void deleteTest() {
@@ -119,5 +137,23 @@ public class AuthorServiceTest extends BaseTest{
 		var exception = assertThrows(ObjectNotFound.class, 
 				() -> service.delete(10));
 		assertEquals("Id: 10 do autor não encontrado", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("buscar por nome")
+	@Sql({"classpath:/resources/sqls/author.sql"})
+	void findByNameTest() {
+		Optional<Author> autor = service.findByName("Max");
+		assertNotNull(autor);
+		assertEquals(3, autor.get().getId());
+		assertEquals("Max", autor.get().getName());
+	}
+	
+	@Test
+	@DisplayName("buscar por nome nenhum encontrado")
+	void findByNameNotFoundTest() {
+		var exception = assertThrows(ObjectNotFound.class, 
+				() -> service.findByName("test"));
+		assertEquals("Nenhum autor contém o nome: test", exception.getMessage());
 	}
 }
