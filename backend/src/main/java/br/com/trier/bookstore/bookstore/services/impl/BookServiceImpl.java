@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Book;
+import br.com.trier.bookstore.bookstore.models.City;
 import br.com.trier.bookstore.bookstore.repositories.BookRepository;
 import br.com.trier.bookstore.bookstore.services.BookService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
@@ -21,6 +22,10 @@ public class BookServiceImpl implements BookService{
 	private void validName(Book book) {
 		if(book.getName() == null || book.getName().trim().isEmpty()) {
 			throw new IntegrityViolation("Nome do livro está vazio");
+		}
+		Book find = repository.findByName(book.getName()).orElse(null);
+		if (find != null && find.getId() != book.getId()) {
+			throw new IntegrityViolation("O livro já contém o nome %s".formatted(book.getName()));
 		}
 	}
 	

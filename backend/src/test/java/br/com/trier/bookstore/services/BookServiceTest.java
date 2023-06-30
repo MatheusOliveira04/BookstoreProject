@@ -73,6 +73,15 @@ public class BookServiceTest extends BaseTest{
 	}
 	
 	@Test
+	@DisplayName("Teste inserir com nome duplicado")
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	void insertNameAlreadyExistsTest() {
+		Book book = new Book(5,"Mar");
+		var exception = assertThrows(IntegrityViolation.class, () -> service.insert(book));
+		assertEquals("O livro já contém o nome Mar", exception.getMessage());
+	}
+	
+	@Test
 	@DisplayName("Teste atualizar")
 	@Sql({"classpath:/resources/sqls/book.sql"})
 	void updateTest() {
@@ -88,6 +97,15 @@ public class BookServiceTest extends BaseTest{
 		Book book = new Book(3,null);
 		var exception = assertThrows(IntegrityViolation.class, () -> service.update(book));
 		assertEquals("Nome do livro está vazio", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("Teste atualiza com nome duplicado")
+	@Sql({"classpath:/resources/sqls/book.sql"})
+	void updateNameAlreadyExistsTest() {
+		Book book = new Book(4,"Mar");
+		var exception = assertThrows(IntegrityViolation.class, () -> service.update(book));
+		assertEquals("O livro já contém o nome Mar", exception.getMessage());
 	}
 	
 	@Test

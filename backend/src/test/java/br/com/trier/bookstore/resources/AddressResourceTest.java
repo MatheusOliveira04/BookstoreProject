@@ -18,7 +18,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.web.server.ServerHttpSecurity.HttpsRedirectSpec;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -72,20 +71,29 @@ public class AddressResourceTest {
 	
 	@Test
 	@DisplayName("Teste buscar por id inexistente")
-	@Sql({"classpath:/resources/sqls/delete_columns.sql"})
-	@Sql({"classpath:/resources/sqls/users.sql"})
-	@Sql({"classpath:/resources/sqls/city.sql"})
 	void findByIdNotFoundTest() {
 		ResponseEntity<AddressDTO> response = getAddress("/address/10");
 		assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 	
 	@Test
-	@DisplayName("Teste buscar todos")
-	@Sql({"classpath:/resources/sqls/delete_columns.sql"})
+	@DisplayName("Teste buscar por cidade")
+	void findByCityTest() {
+		ResponseEntity<List<AddressDTO>> response = getAllAddress("/address/city/3");
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
+	}
+	
+	@Test
+	@DisplayName("Teste buscar por cidade não encontrado")
+	@Sql({"classpath:/resources/sqls/delete_users.sql"})
 	@Sql({"classpath:/resources/sqls/users.sql"})
-	@Sql({"classpath:/resources/sqls/city.sql"})
-	@Sql({"classpath:/resources/sqls/address.sql"})
+	void findByCityNotFoundTest() {
+		ResponseEntity<AddressDTO> response = getAddress("/address/city/10");
+		assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+	}
+	
+	@Test
+	@DisplayName("Teste buscar todos")
 	void findAllTest() {
 		ResponseEntity<List<AddressDTO>> response = getAllAddress("/address");
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
@@ -96,14 +104,53 @@ public class AddressResourceTest {
 	@DisplayName("Teste inserir")
 	@Sql({"classpath:/resources/sqls/delete_users.sql"})
 	@Sql({"classpath:/resources/sqls/users.sql"})
-	@Sql({"classpath:/resources/sqls/city.sql"})
 	void insertTest() {
-		AddressDTO addressDTO = new AddressDTO(1, "Rua", "Bairro", 1, "Orleans", "SC");
+		AddressDTO addressDTO = new AddressDTO(5, "Rua", "Bairro", 3, "Orleans", "SC");
 		HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<AddressDTO> request = new HttpEntity<>(addressDTO, headers);
 		ResponseEntity<AddressDTO> response = rest.exchange("/address", 
 				HttpMethod.POST, request, AddressDTO.class);
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
+	}
+	
+	@Test
+	@DisplayName("Teste inserir com cidade nulo")
+	@Sql({"classpath:/resources/sqls/delete_users.sql"})
+	@Sql({"classpath:/resources/sqls/users.sql"})
+	void insertCityNullTest() {
+	    AddressDTO addressDTO = new AddressDTO(null, "Rua", "Bairro", null, "Orleans", "SC");
+	    HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    HttpEntity<AddressDTO> request = new HttpEntity<>(addressDTO, headers);
+	    ResponseEntity<AddressDTO> response = rest.exchange("/address",
+	            HttpMethod.POST, request, AddressDTO.class);
+	    assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
+	@DisplayName("Teste update")
+	@Sql({"classpath:/resources/sqls/delete_columns.sql"})
+	@Sql({"classpath:/resources/sqls/users.sql"})
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	void updateTest() {
+		AddressDTO addressDTO = new AddressDTO(3, "Rua", "Bairro", 4, "Orleans", "SC");
+		HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<AddressDTO> request = new HttpEntity<>(addressDTO, headers);
+		ResponseEntity<AddressDTO> response = rest.exchange("/address/3", 
+				HttpMethod.PUT, request, AddressDTO.class);
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
+	}
+	
+	@Test
+	@DisplayName("Teste delete")
+	void deleteTest() {
+		HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
+		HttpEntity<Void> request = new HttpEntity<>(headers);
+		ResponseEntity<Void> response = rest.exchange("/address/3", 
+				HttpMethod.DELETE, request,Void.class);
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
 }

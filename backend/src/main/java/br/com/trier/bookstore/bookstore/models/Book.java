@@ -24,6 +24,6 @@ public class Book {
 	@Column(name = "id_livro")
 	private Integer id;
 	
-	@Column(name = "nome_livro", nullable = false)
+	@Column(name = "nome_livro", nullable = false, unique = true)
 	private String name;
 }
