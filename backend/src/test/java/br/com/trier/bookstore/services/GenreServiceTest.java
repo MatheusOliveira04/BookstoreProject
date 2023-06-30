@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.bookstore.BaseTest;
-import br.com.trier.bookstore.bookstore.models.Book;
-import br.com.trier.bookstore.bookstore.models.Client;
 import br.com.trier.bookstore.bookstore.models.Genre;
 import br.com.trier.bookstore.bookstore.services.GenreService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;

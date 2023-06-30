@@ -1,7 +1,6 @@
 package br.com.trier.bookstore.bookstore.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import br.com.trier.bookstore.bookstore.models.Book;
 import br.com.trier.bookstore.bookstore.models.Order;

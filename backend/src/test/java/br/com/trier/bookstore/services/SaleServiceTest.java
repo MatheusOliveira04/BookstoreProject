@@ -10,14 +10,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 import br.com.trier.bookstore.BaseTest;
 import br.com.trier.bookstore.bookstore.models.Address;
-import br.com.trier.bookstore.bookstore.models.BookAuthor;
 import br.com.trier.bookstore.bookstore.models.City;
 import br.com.trier.bookstore.bookstore.models.Client;
-import br.com.trier.bookstore.bookstore.models.Genre;
 import br.com.trier.bookstore.bookstore.models.Sale;
 import br.com.trier.bookstore.bookstore.models.Salesperson;
 import br.com.trier.bookstore.bookstore.models.Telephone;

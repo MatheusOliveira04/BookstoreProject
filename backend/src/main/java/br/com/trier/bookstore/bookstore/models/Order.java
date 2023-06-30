@@ -1,7 +1,6 @@
 package br.com.trier.bookstore.bookstore.models;
 
 import br.com.trier.bookstore.bookstore.models.dto.OrderDTO;
-import br.com.trier.bookstore.bookstore.models.dto.SaleDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,14 +1,12 @@
 package br.com.trier.bookstore.bookstore.services.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.Client;
-import br.com.trier.bookstore.bookstore.models.Salesperson;
 import br.com.trier.bookstore.bookstore.models.Telephone;
 import br.com.trier.bookstore.bookstore.repositories.ClientRepository;
 import br.com.trier.bookstore.bookstore.services.ClientService;

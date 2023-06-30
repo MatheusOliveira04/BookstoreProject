@@ -36,6 +36,12 @@ public class AuthorResource {
 		return ResponseEntity.ok(service.findAll());
 	}
 	
+	@Secured({"ROLE_USER"})
+	@GetMapping("/name/{name}")
+	public ResponseEntity<Author> findByName(@PathVariable String name){
+		return ResponseEntity.ok(service.findByName(name).get());
+	}
+	
 	@Secured({"ROLE_ADMIN"})
 	@PostMapping
 	public ResponseEntity<Author> insert(@RequestBody Author author){

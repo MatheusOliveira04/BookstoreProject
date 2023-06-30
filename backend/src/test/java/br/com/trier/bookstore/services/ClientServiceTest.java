@@ -15,7 +15,6 @@ import br.com.trier.bookstore.BaseTest;
 import br.com.trier.bookstore.bookstore.models.Address;
 import br.com.trier.bookstore.bookstore.models.City;
 import br.com.trier.bookstore.bookstore.models.Client;
-import br.com.trier.bookstore.bookstore.models.Salesperson;
 import br.com.trier.bookstore.bookstore.models.Telephone;
 import br.com.trier.bookstore.bookstore.services.ClientService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;

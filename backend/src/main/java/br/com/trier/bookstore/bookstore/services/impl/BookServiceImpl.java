@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.bookstore.bookstore.models.Book;
-import br.com.trier.bookstore.bookstore.models.City;
 import br.com.trier.bookstore.bookstore.repositories.BookRepository;
 import br.com.trier.bookstore.bookstore.services.BookService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;

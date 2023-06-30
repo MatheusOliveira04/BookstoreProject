@@ -33,8 +33,8 @@ public class AddressResourceTest {
 	@Autowired
 	TestRestTemplate rest;
 	
-	private HttpHeaders getHeaders(String email, String senha) {
-		LoginDTO loginDTO = new LoginDTO(email, senha);
+	private HttpHeaders getHeaders(String email, String password) {
+		LoginDTO loginDTO = new LoginDTO(email, password);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<LoginDTO> request = new HttpEntity<>(loginDTO, headers);
@@ -115,25 +115,21 @@ public class AddressResourceTest {
 	}
 	
 	@Test
-	@DisplayName("Teste inserir com cidade nulo")
+	@DisplayName("Teste inserir com cidade inexistente")
 	@Sql({"classpath:/resources/sqls/delete_users.sql"})
 	@Sql({"classpath:/resources/sqls/users.sql"})
 	void insertCityNullTest() {
-	    AddressDTO addressDTO = new AddressDTO(null, "Rua", "Bairro", null, "Orleans", "SC");
+	    AddressDTO addressDTO = new AddressDTO(null, "Rua", "Bairro", 8, "Orleans", "SC");
 	    HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    HttpEntity<AddressDTO> request = new HttpEntity<>(addressDTO, headers);
 	    ResponseEntity<AddressDTO> response = rest.exchange("/address",
 	            HttpMethod.POST, request, AddressDTO.class);
-	    assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+	    assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 
 	@Test
-	@DisplayName("Teste update")
-	@Sql({"classpath:/resources/sqls/delete_columns.sql"})
-	@Sql({"classpath:/resources/sqls/users.sql"})
-	@Sql({"classpath:/resources/sqls/city.sql"})
-	@Sql({"classpath:/resources/sqls/address.sql"})
+	@DisplayName("Teste atualizar")
 	void updateTest() {
 		AddressDTO addressDTO = new AddressDTO(3, "Rua", "Bairro", 4, "Orleans", "SC");
 		HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
@@ -145,12 +141,51 @@ public class AddressResourceTest {
 	}
 	
 	@Test
-	@DisplayName("Teste delete")
+	@DisplayName("Teste atualiza com id inexistente")
+	@Sql({"classpath:/resources/sqls/delete_columns.sql"})
+	@Sql({"classpath:/resources/sqls/users.sql"})
+	@Sql({"classpath:/resources/sqls/city.sql"})
+	@Sql({"classpath:/resources/sqls/address.sql"})
+	void updateIdNotFoundTest() {
+		AddressDTO addressDTO = new AddressDTO(3, "Rua", "Bairro", 4, "Orleans", "SC");
+		HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<AddressDTO> request = new HttpEntity<>(addressDTO, headers);
+		ResponseEntity<AddressDTO> response = rest.exchange("/address/10", 
+				HttpMethod.PUT, request, AddressDTO.class);
+		assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+	}
+	
+	@Test
+	@DisplayName("Teste atualiza com cidade inexistente")
+	void updateCityNullTest() {
+	    AddressDTO addressDTO = new AddressDTO(null, "Rua", "Bairro", 8, "Orleans", "SC");
+	    HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    HttpEntity<AddressDTO> request = new HttpEntity<>(addressDTO, headers);
+	    ResponseEntity<AddressDTO> response = rest.exchange("/address/3",
+	            HttpMethod.PUT, request, AddressDTO.class);
+	    assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+	}
+
+	
+	@Test
+	@DisplayName("Teste deletar")
 	void deleteTest() {
 		HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
 		HttpEntity<Void> request = new HttpEntity<>(headers);
 		ResponseEntity<Void> response = rest.exchange("/address/3", 
 				HttpMethod.DELETE, request,Void.class);
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
+	}
+	
+	@Test
+	@DisplayName("Teste deletar com id inexistente")
+	void deleteIdNotFoundTest() {
+		HttpHeaders headers = getHeaders("matheus@gmail.com", "1907");
+		HttpEntity<Void> request = new HttpEntity<>(headers);
+		ResponseEntity<Void> response = rest.exchange("/address/10", 
+				HttpMethod.DELETE, request,Void.class);
+		assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 }

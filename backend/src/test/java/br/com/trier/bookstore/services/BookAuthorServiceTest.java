@@ -15,7 +15,6 @@ import br.com.trier.bookstore.BaseTest;
 import br.com.trier.bookstore.bookstore.models.Author;
 import br.com.trier.bookstore.bookstore.models.Book;
 import br.com.trier.bookstore.bookstore.models.BookAuthor;
-import br.com.trier.bookstore.bookstore.models.Client;
 import br.com.trier.bookstore.bookstore.services.BookAuthorService;
 import br.com.trier.bookstore.bookstore.services.exceptions.IntegrityViolation;
 import br.com.trier.bookstore.bookstore.services.exceptions.ObjectNotFound;
